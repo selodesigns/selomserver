@@ -1,0 +1,111 @@
+version: '3'
+
+services:
+  # SELO Media Server
+  selomserver:
+    image: selodesigns/selomserver:latest
+    container_name: selomserver
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "32400:32400"  # Main web interface
+    volumes:
+      - ./data:/app/server/data            # Application data
+      - ./logs:/app/server/logs            # Logs
+      - ./config:/app/server/config        # Configuration
+      - /path/to/your/media:/media:ro      # Your media library (read-only)
+    environment:
+      - NODE_ENV=production
+      - TZ=America/New_York                # Set your timezone
+      - PORT=32400
+      - HOST=0.0.0.0
+      - MEDIA_LIBRARY_PATH=/media
+      - JWT_SECRET=change_this_to_a_secure_random_string
+      # Uncomment to use external database
+      # - DB_TYPE=postgres
+      # - DB_HOST=db
+      # - DB_PORT=5432
+      # - DB_NAME=selomedia
+      # - DB_USER=postgres
+      # - DB_PASSWORD=password
+    depends_on:
+      # Uncomment if using PostgreSQL
+      # - db
+      # Uncomment if using Redis for caching
+      # - redis
+    networks:
+      - selo_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:32400/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # PostgreSQL Database (Optional)
+  # Uncomment to use PostgreSQL instead of SQLite
+  # db:
+  #   image: postgres:14-alpine
+  #   container_name: selomserver-postgres
+  #   restart: unless-stopped
+  #   environment:
+  #     - POSTGRES_PASSWORD=password
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_DB=selomedia
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     - selo_network
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
+  # Redis for caching (Optional)
+  # Uncomment to use Redis for improved caching
+  # redis:
+  #   image: redis:alpine
+  #   container_name: selomserver-redis
+  #   restart: unless-stopped
+  #   volumes:
+  #     - redis_data:/data
+  #   networks:
+  #     - selo_network
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
+  # Watchtower for automatic updates (Optional)
+  # Uncomment to enable automatic container updates
+  # watchtower:
+  #   image: containrrr/watchtower
+  #   container_name: selomserver-watchtower
+  #   restart: unless-stopped
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   command: --interval 86400 --cleanup selomserver
+  #   networks:
+  #     - selo_network
+
+networks:
+  selo_network:
+    driver: bridge
+
+volumes:
+  # Uncomment if using PostgreSQL
+  # postgres_data:
+  # Uncomment if using Redis
+  # redis_data:
+
+# Additional notes:
+# 1. Replace /path/to/your/media with the actual path to your media library
+# 2. Change the timezone (TZ) to your local timezone
+# 3. For security, change the JWT_SECRET to a random string
+# 4. Consider using a reverse proxy like Traefik or Nginx for HTTPS support

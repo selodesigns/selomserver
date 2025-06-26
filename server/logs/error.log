@@ -1,0 +1,202 @@
+2025-06-24 00:19:17 [ERROR] [SELO-Media-Server] Uncaught exception
+Error: listen EADDRINUSE: address already in use :::3240
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at app.listen (E:\GitHub\SELOMServer\server\node_modules\express\lib\application.js:635:24)
+    at E:\GitHub\SELOMServer\server\index.js:98:32
+    at new Promise (<anonymous>)
+    at SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:97:14)
+2025-06-24 00:19:34 [ERROR] [SELO-Media-Server] Uncaught exception
+Error: listen EADDRINUSE: address already in use :::3240
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at app.listen (E:\GitHub\SELOMServer\server\node_modules\express\lib\application.js:635:24)
+    at E:\GitHub\SELOMServer\server\index.js:98:32
+    at new Promise (<anonymous>)
+    at SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:97:14)
+2025-06-24 00:25:46 [ERROR] [SELO-Media-Server] Request error
+SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at parse (E:\GitHub\SELOMServer\server\node_modules\body-parser\lib\types\json.js:92:19)
+    at E:\GitHub\SELOMServer\server\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (E:\GitHub\SELOMServer\server\node_modules\raw-body\index.js:238:16)
+    at done (E:\GitHub\SELOMServer\server\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (E:\GitHub\SELOMServer\server\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:507:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-24 00:46:34 [ERROR] [SELO-Media-Server] Unhandled rejection {"reason":{},"promise":{}}
+2025-06-25 02:38:33 [ERROR] [SELO-Media-Server] Failed to initialize SELO Media Server
+TypeError: logger.error is not a function
+    at StreamManager.cleanupOldStreams (E:\GitHub\SELOMServer\server\services\StreamManager.js:476:14)
+    at new StreamManager (E:\GitHub\SELOMServer\server\services\StreamManager.js:35:10)
+    at SELOMediaServer.initialize (E:\GitHub\SELOMServer\server\index.js:77:28)
+    at async SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:114:12)
+2025-06-25 02:38:33 [ERROR] [SELO-Media-Server] Failed to start SELO Media Server
+Error: Server initialization failed
+    at SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:115:15)
+2025-06-25 02:41:06 [ERROR] [SELO-Media-Server] Failed to initialize SELO Media Server
+TypeError: logger.error is not a function
+    at StreamManager.cleanupOldStreams (E:\GitHub\SELOMServer\server\services\StreamManager.js:476:14)
+    at new StreamManager (E:\GitHub\SELOMServer\server\services\StreamManager.js:35:10)
+    at SELOMediaServer.initialize (E:\GitHub\SELOMServer\server\index.js:77:28)
+    at async SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:114:12)
+2025-06-25 02:41:06 [ERROR] [SELO-Media-Server] Failed to start SELO Media Server
+Error: Server initialization failed
+    at SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:115:15)
+2025-06-25 02:42:34 [ERROR] [SELO-Media-Server] Failed to initialize SELO Media Server
+TypeError: logger.error is not a function
+    at StreamManager.cleanupOldStreams (E:\GitHub\SELOMServer\server\services\StreamManager.js:476:14)
+    at new StreamManager (E:\GitHub\SELOMServer\server\services\StreamManager.js:35:10)
+    at SELOMediaServer.initialize (E:\GitHub\SELOMServer\server\index.js:77:28)
+    at async SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:114:12)
+2025-06-25 02:42:34 [ERROR] [SELO-Media-Server] Failed to start SELO Media Server
+Error: Server initialization failed
+    at SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:115:15)
+2025-06-25 02:43:20 [ERROR] [SELO-Media-Server] Failed to initialize SELO Media Server
+TypeError: logger.error is not a function
+    at StreamManager.cleanupOldStreams (E:\GitHub\SELOMServer\server\services\StreamManager.js:476:14)
+    at new StreamManager (E:\GitHub\SELOMServer\server\services\StreamManager.js:35:10)
+    at SELOMediaServer.initialize (E:\GitHub\SELOMServer\server\index.js:77:28)
+    at async SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:114:12)
+2025-06-25 02:43:20 [ERROR] [SELO-Media-Server] Failed to start SELO Media Server
+Error: Server initialization failed
+    at SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:115:15)
+2025-06-25 02:44:29 [ERROR] [SELO-Media-Server] Error cleaning up old streams: Stream.update is not a function
+TypeError: Stream.update is not a function
+    at StreamManager.cleanupOldStreams (E:\GitHub\SELOMServer\server\services\StreamManager.js:453:14)
+    at new StreamManager (E:\GitHub\SELOMServer\server\services\StreamManager.js:35:10)
+    at SELOMediaServer.initialize (E:\GitHub\SELOMServer\server\index.js:77:28)
+    at async SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:114:12)
+2025-06-25 02:44:29 [ERROR] [SELO-Media-Server] Failed to initialize SELO Media Server
+TypeError: Router.use() requires a middleware function but got a undefined
+    at router.use (E:\GitHub\SELOMServer\server\node_modules\express\lib\router\index.js:469:13)
+    at Object.<anonymous> (E:\GitHub\SELOMServer\server\routes\admin.js:50:8)
+    at Module._compile (node:internal/modules/cjs/loader:1734:14)
+    at Object..js (node:internal/modules/cjs/loader:1899:10)
+    at Module.load (node:internal/modules/cjs/loader:1469:32)
+    at Module._load (node:internal/modules/cjs/loader:1286:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1491:12)
+    at require (node:internal/modules/helpers:135:16)
+2025-06-25 02:44:29 [ERROR] [SELO-Media-Server] Failed to start SELO Media Server
+Error: Server initialization failed
+    at SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:115:15)
+2025-06-25 02:46:54 [ERROR] [SELO-Media-Server] Error cleaning up old streams: Stream.update is not a function
+TypeError: Stream.update is not a function
+    at StreamManager.cleanupOldStreams (E:\GitHub\SELOMServer\server\services\StreamManager.js:453:14)
+    at new StreamManager (E:\GitHub\SELOMServer\server\services\StreamManager.js:35:10)
+    at SELOMediaServer.initialize (E:\GitHub\SELOMServer\server\index.js:77:28)
+    at async SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:114:12)
+2025-06-25 02:46:54 [ERROR] [SELO-Media-Server] Failed to initialize SELO Media Server
+TypeError: Router.use() requires a middleware function but got a undefined
+    at router.use (E:\GitHub\SELOMServer\server\node_modules\express\lib\router\index.js:469:13)
+    at Object.<anonymous> (E:\GitHub\SELOMServer\server\routes\admin.js:50:8)
+    at Module._compile (node:internal/modules/cjs/loader:1734:14)
+    at Object..js (node:internal/modules/cjs/loader:1899:10)
+    at Module.load (node:internal/modules/cjs/loader:1469:32)
+    at Module._load (node:internal/modules/cjs/loader:1286:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1491:12)
+    at require (node:internal/modules/helpers:135:16)
+2025-06-25 02:46:54 [ERROR] [SELO-Media-Server] Failed to start SELO Media Server
+Error: Server initialization failed
+    at SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:115:15)
+2025-06-25 02:47:04 [ERROR] [SELO-Media-Server] Error cleaning up old streams: Stream.update is not a function
+TypeError: Stream.update is not a function
+    at StreamManager.cleanupOldStreams (E:\GitHub\SELOMServer\server\services\StreamManager.js:453:14)
+    at new StreamManager (E:\GitHub\SELOMServer\server\services\StreamManager.js:35:10)
+    at SELOMediaServer.initialize (E:\GitHub\SELOMServer\server\index.js:77:28)
+    at async SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:114:12)
+2025-06-25 02:47:04 [ERROR] [SELO-Media-Server] Failed to initialize SELO Media Server
+TypeError: Router.use() requires a middleware function but got a undefined
+    at router.use (E:\GitHub\SELOMServer\server\node_modules\express\lib\router\index.js:469:13)
+    at Object.<anonymous> (E:\GitHub\SELOMServer\server\routes\admin.js:50:8)
+    at Module._compile (node:internal/modules/cjs/loader:1734:14)
+    at Object..js (node:internal/modules/cjs/loader:1899:10)
+    at Module.load (node:internal/modules/cjs/loader:1469:32)
+    at Module._load (node:internal/modules/cjs/loader:1286:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1491:12)
+    at require (node:internal/modules/helpers:135:16)
+2025-06-25 02:47:04 [ERROR] [SELO-Media-Server] Failed to start SELO Media Server
+Error: Server initialization failed
+    at SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:115:15)
+2025-06-25 02:48:50 [ERROR] [SELO-Media-Server] Error cleaning up old streams: Stream.update is not a function
+TypeError: Stream.update is not a function
+    at StreamManager.cleanupOldStreams (E:\GitHub\SELOMServer\server\services\StreamManager.js:453:14)
+    at new StreamManager (E:\GitHub\SELOMServer\server\services\StreamManager.js:35:10)
+    at SELOMediaServer.initialize (E:\GitHub\SELOMServer\server\index.js:77:28)
+    at async SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:114:12)
+2025-06-25 03:13:13 [ERROR] [SELO-Media-Server] Error cleaning up old streams: Stream.update is not a function
+TypeError: Stream.update is not a function
+    at StreamManager.cleanupOldStreams (E:\GitHub\SELOMServer\server\services\StreamManager.js:453:14)
+    at new StreamManager (E:\GitHub\SELOMServer\server\services\StreamManager.js:35:10)
+    at SELOMediaServer.initialize (E:\GitHub\SELOMServer\server\index.js:77:28)
+    at async SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:114:12)
+2025-06-25 08:46:48 [ERROR] [SELO-Media-Server] Request error
+SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at parse (E:\GitHub\SELOMServer\server\node_modules\body-parser\lib\types\json.js:92:19)
+    at E:\GitHub\SELOMServer\server\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (E:\GitHub\SELOMServer\server\node_modules\raw-body\index.js:238:16)
+    at done (E:\GitHub\SELOMServer\server\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (E:\GitHub\SELOMServer\server\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:507:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 08:48:37 [ERROR] [SELO-Media-Server] Request error
+SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at parse (E:\GitHub\SELOMServer\server\node_modules\body-parser\lib\types\json.js:92:19)
+    at E:\GitHub\SELOMServer\server\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (E:\GitHub\SELOMServer\server\node_modules\raw-body\index.js:238:16)
+    at done (E:\GitHub\SELOMServer\server\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (E:\GitHub\SELOMServer\server\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:507:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 08:50:50 [ERROR] [SELO-Media-Server] Request error
+SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at parse (E:\GitHub\SELOMServer\server\node_modules\body-parser\lib\types\json.js:92:19)
+    at E:\GitHub\SELOMServer\server\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (E:\GitHub\SELOMServer\server\node_modules\raw-body\index.js:238:16)
+    at done (E:\GitHub\SELOMServer\server\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (E:\GitHub\SELOMServer\server\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:507:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 09:30:49 [ERROR] [SELO-Media-Server] Request error
+SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at parse (E:\GitHub\SELOMServer\server\node_modules\body-parser\lib\types\json.js:92:19)
+    at E:\GitHub\SELOMServer\server\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (E:\GitHub\SELOMServer\server\node_modules\raw-body\index.js:238:16)
+    at done (E:\GitHub\SELOMServer\server\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (E:\GitHub\SELOMServer\server\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:507:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-06-25 09:31:13 [ERROR] [SELO-Media-Server] Request error
+SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at parse (E:\GitHub\SELOMServer\server\node_modules\body-parser\lib\types\json.js:92:19)
+    at E:\GitHub\SELOMServer\server\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (E:\GitHub\SELOMServer\server\node_modules\raw-body\index.js:238:16)
+    at done (E:\GitHub\SELOMServer\server\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (E:\GitHub\SELOMServer\server\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:507:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)

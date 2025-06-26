@@ -1,0 +1,21 @@
+2025-06-23 23:55:32 [INFO] [SELO-Media-Server] Initializing SELO Media Server...
+2025-06-23 23:55:32 [INFO] [SELO-Media-Server] Ensuring data directories exist
+2025-06-23 23:55:32 [INFO] [SELO-Media-Server] Setting up middleware
+2025-06-23 23:55:58 [INFO] [SELO-Media-Server] Initializing SELO Media Server...
+2025-06-23 23:55:58 [INFO] [SELO-Media-Server] Ensuring data directories exist
+2025-06-23 23:55:58 [INFO] [SELO-Media-Server] Setting up middleware
+2025-06-24 00:03:08 [INFO] [SELO-Media-Server] Initializing SELO Media Server...
+2025-06-24 00:03:08 [INFO] [SELO-Media-Server] Ensuring data directories exist
+2025-06-24 00:03:08 [INFO] [SELO-Media-Server] Setting up middleware
+2025-06-24 00:05:22 [INFO] [SELO-Media-Server] Initializing SELO Media Server...
+2025-06-24 00:05:22 [INFO] [SELO-Media-Server] Ensuring data directories exist
+2025-06-24 00:05:22 [INFO] [SELO-Media-Server] Setting up middleware
+2025-06-24 00:05:22 [INFO] [SELO-Media-Server] Setting up routes
+2025-06-24 00:05:22 [INFO] [SELO-Media-Server] SELO Media Server initialized successfully
+2025-06-24 00:05:22 [INFO] [SELO-Media-Server] 
+2025-06-24 00:05:22 [INFO] [SELO-Media-Server] 🎬 SELO Media Server Started!
+2025-06-24 00:05:22 [INFO] [SELO-Media-Server] Server Name: SELO Media Server
+2025-06-24 00:05:22 [INFO] [SELO-Media-Server] Server ID: abcde12345-demo-server-id
+2025-06-24 00:05:22 [INFO] [SELO-Media-Server] Version: 1.0.0
+2025-06-24 00:05:22 [INFO] [SELO-Media-Server] Listening on: http://localhost:3240
+2025-06-24 00:05:22 [INFO] [SELO-Media-Server] 

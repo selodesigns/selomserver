@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "codename": "Genesis",
+  "releaseDate": "2025-06-25",
+  "releaseType": "stable",
+  "commitHash": "initial",
+  "apiVersion": "1.0",
+  "minNodeVersion": "18.0.0",
+  "company": "SELODev",
+  "website": "https://selodev.com",
+  "repository": "https://github.com/selodesigns/selomserver",
+  "dependencies": {
+    "ffmpeg": ">=4.0.0"
+  },
+  "releaseNotes": "Initial stable release of SELO Media Server. Features include media library management, transcoding, streaming, user management, and a responsive web interface."
+}

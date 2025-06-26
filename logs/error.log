@@ -1,0 +1,27 @@
+2025-06-23 23:55:32 [ERROR] [SELO-Media-Server] Uncaught exception
+Error: listen EADDRINUSE: address already in use :::32400
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at app.listen (E:\GitHub\SELOMServer\server\node_modules\express\lib\application.js:635:24)
+    at E:\GitHub\SELOMServer\server\index.js:90:32
+    at new Promise (<anonymous>)
+    at SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:89:14)
+2025-06-23 23:55:58 [ERROR] [SELO-Media-Server] Uncaught exception
+Error: listen EADDRINUSE: address already in use :::32400
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at app.listen (E:\GitHub\SELOMServer\server\node_modules\express\lib\application.js:635:24)
+    at E:\GitHub\SELOMServer\server\index.js:90:32
+    at new Promise (<anonymous>)
+    at SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:89:14)
+2025-06-24 00:03:08 [ERROR] [SELO-Media-Server] Uncaught exception
+Error: listen EADDRINUSE: address already in use :::32400
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at app.listen (E:\GitHub\SELOMServer\server\node_modules\express\lib\application.js:635:24)
+    at E:\GitHub\SELOMServer\server\index.js:90:32
+    at new Promise (<anonymous>)
+    at SELOMediaServer.start (E:\GitHub\SELOMServer\server\index.js:89:14)

@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  selo-media-server:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: selo-media-server
+    restart: unless-stopped
+    ports:
+      - "32400:32400"
+    volumes:
+      - ../server/data:/app/server/data
+      - ../server/logs:/app/server/logs
+      # Mount your media library here
+      # - /path/to/your/media:/app/media
+    environment:
+      - NODE_ENV=production
+      - SERVER_NAME=SELO Media Server
+      # Uncomment and set these if needed
+      # - PORT=32400
+      # - LOG_LEVEL=info
+    networks:
+      - selo-network
+
+networks:
+  selo-network:
+    driver: bridge
