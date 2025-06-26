@@ -1,6 +1,6 @@
 # SELO Media Server
 
-![SELO Media Server Banner](https://via.placeholder.com/1200x300/0066cc/ffffff?text=SELO+Media+Server)
+![SELO Media Server Logo](server/images/smslogo.png)
 
 A modern, open-source media streaming server for your personal media collection.
 
@@ -28,13 +28,8 @@ Developed by [SELODev](https://selodev.com) | [GitHub](https://github.com/selode
 ## 🖼️ Screenshots
 
 <div align="center">
-  <img src="https://via.placeholder.com/400x225/0066cc/ffffff?text=Home+Screen" alt="Home Screen" width="45%">
-  <img src="https://via.placeholder.com/400x225/0066cc/ffffff?text=Media+Player" alt="Media Player" width="45%">
-</div>
-
-<div align="center">
-  <img src="https://via.placeholder.com/400x225/0066cc/ffffff?text=Library+View" alt="Library View" width="45%">
-  <img src="https://via.placeholder.com/400x225/0066cc/ffffff?text=Admin+Dashboard" alt="Admin Dashboard" width="45%">
+  <p><i>Screenshot previews coming soon</i></p>
+  <img src="server/images/smslogo.png" alt="SELO Media Server Logo" width="250px">
 </div>
 
 ---
