@@ -94,7 +94,16 @@ const Sidebar: React.FC<SidebarProps> = ({ open, width, onClose }) => {
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <MovieIcon sx={{ mr: 1, color: 'primary.main' }} />
+          <Box 
+            component="img"
+            src="/images/smslogo.png"
+            alt="SELO Media Server"
+            sx={{ 
+              height: 32, 
+              width: 'auto', 
+              mr: 1
+            }}
+          />
           <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
             SELO Media
           </Typography>
