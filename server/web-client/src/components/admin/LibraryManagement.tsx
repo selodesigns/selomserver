@@ -18,26 +18,24 @@ import {
   Card,
   CardContent,
   CardActions,
-  CardMedia,
-  Grid,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
-  LinearProgress
+  LinearProgress,
+  Grid
 } from '@mui/material';
-import {
-  Add as AddIcon,
-  Delete as DeleteIcon,
-  Edit as EditIcon,
-  Refresh as RefreshIcon,
-  Folder as FolderIcon,
-  Storage as StorageIcon
-} from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
+import type { SelectChangeEvent } from '@mui/material/Select';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import FolderIcon from '@mui/icons-material/Folder';
+import StorageIcon from '@mui/icons-material/Storage';
 
 // API Service
 import apiService from '../../services/api';
-import { Library } from '../../types';
+import type { Library } from '../../types';
 import { useWebSocket } from '../../contexts/WebSocketContext';
 
 // Library Management Component
@@ -50,7 +48,7 @@ const LibraryManagement: React.FC = () => {
   const [scanProgress, setScanProgress] = useState<Record<string, number>>({});
   
   // WebSocket context for real-time updates
-  const { subscribe, unsubscribe } = useWebSocket();
+  const { activeScans } = useWebSocket();
   
   // State for dialogs
   const [createDialogOpen, setCreateDialogOpen] = useState<boolean>(false);
@@ -85,43 +83,43 @@ const LibraryManagement: React.FC = () => {
   useEffect(() => {
     fetchLibraries();
     
-    // Subscribe to scan progress events
-    subscribe('scan_progress', (data) => {
-      if (data.libraryId) {
-        setScanProgress(prev => ({
-          ...prev,
-          [data.libraryId]: data.progress
-        }));
+    // No need to manually subscribe/unsubscribe as the WebSocketContext handles this
+    return () => {
+      // Cleanup if needed
+    };
+  }, []);
+  
+  // Monitor activeScans from WebSocketContext
+  useEffect(() => {
+    if (activeScans && activeScans.size > 0) {
+      // Convert Map to Record for our local state
+      const scanProgressUpdate: Record<string, number> = {};
+      const scanningUpdate: Record<string, boolean> = {};
+      
+      activeScans.forEach((scanData, libraryId) => {
+        scanProgressUpdate[libraryId] = scanData.progress;
+        scanningUpdate[libraryId] = scanData.progress < 100;
         
-        // If progress is 100, mark as not scanning
-        if (data.progress === 100) {
+        // If progress is 100, mark as not scanning after a delay
+        if (scanData.progress === 100) {
           setTimeout(() => {
             setScanningLibraries(prev => ({
               ...prev,
-              [data.libraryId]: false
+              [libraryId]: false
             }));
             setScanProgress(prev => ({
               ...prev,
-              [data.libraryId]: 0
+              [libraryId]: 0
             }));
             fetchLibraries();
           }, 1000);
         }
-      }
-    });
-    
-    // Subscribe to media events
-    subscribe('media_added', () => fetchLibraries());
-    subscribe('media_updated', () => fetchLibraries());
-    subscribe('media_removed', () => fetchLibraries());
-    
-    return () => {
-      unsubscribe('scan_progress');
-      unsubscribe('media_added');
-      unsubscribe('media_updated');
-      unsubscribe('media_removed');
-    };
-  }, []);
+      });
+      
+      setScanProgress(prev => ({ ...prev, ...scanProgressUpdate }));
+      setScanningLibraries(prev => ({ ...prev, ...scanningUpdate }));
+    }
+  }, [activeScans]);
   
   // Fetch library list
   const fetchLibraries = async () => {
@@ -158,13 +156,22 @@ const LibraryManagement: React.FC = () => {
   };
   
   // Handle input change
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>) => {
-    const { name, value, checked } = e.target as any;
+  // Compatible with both MUI TextField and Select
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>
+  ) => {
+    const target = e.target as HTMLInputElement | { name?: string; value: unknown; checked?: boolean };
+    const name = target.name as string;
+    let value: any = target.value;
+    if (typeof target.checked !== 'undefined') {
+      value = target.checked;
+    }
     setFormData({
       ...formData,
-      [name as string]: checked !== undefined ? checked : value
+      [name]: value
     });
   };
+
   
   // Handle create library dialog
   const handleCreateDialogOpen = () => {
@@ -409,7 +416,7 @@ const LibraryManagement: React.FC = () => {
         <Grid container spacing={3}>
           {libraries.length > 0 ? (
             libraries.map((library) => (
-              <Grid item xs={12} sm={6} md={4} key={library.id}>
+              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={library.id}>
                 <Card>
                   <CardContent>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -483,7 +490,7 @@ const LibraryManagement: React.FC = () => {
               </Grid>
             ))
           ) : (
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Paper sx={{ p: 3, textAlign: 'center' }}>
                 <Typography variant="body1">
                   No libraries found. Click "Add Library" to create your first library.

@@ -20,16 +20,14 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material';
-import {
-  Refresh as RefreshIcon,
-  Stop as StopIcon,
-  Info as InfoIcon,
-  Person as PersonIcon,
-  Speed as SpeedIcon,
-  Storage as StorageIcon,
-  Movie as MovieIcon,
-  LiveTv as LiveTvIcon,
-} from '@mui/icons-material';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import StopIcon from '@mui/icons-material/Stop';
+import InfoIcon from '@mui/icons-material/Info';
+import PersonIcon from '@mui/icons-material/Person';
+import SpeedIcon from '@mui/icons-material/Speed';
+import StorageIcon from '@mui/icons-material/Storage';
+import MovieIcon from '@mui/icons-material/Movie';
+import LiveTvIcon from '@mui/icons-material/LiveTv';
 
 // WebSocket context for real-time updates
 import { useWebSocket } from '../../contexts/WebSocketContext';

@@ -38,6 +38,16 @@ Developed by [SELODev](https://selodev.com) | [GitHub](https://github.com/selode
 
 - **Node.js**: v18.0.0 or higher
 - **FFmpeg**: Required for transcoding and thumbnail generation
+
+---
+
+### ⚠️ Windows/Vite "Too Many Open Files" Fix
+
+If you see errors like `EMFILE: too many open files` during the build, this is caused by the operating system limiting the number of files that can be opened at once. This is especially common on Windows and with large dependency trees (e.g., @mui/icons-material).
+
+**This project automatically applies [graceful-fs](https://www.npmjs.com/package/graceful-fs) via a prebuild script (`patch-fs.js`) that runs before every build.**
+
+No manual action is required. If you still encounter file handle errors, please report an issue on GitHub with your OS and Node version.
 - **Storage**: Space for your media library
 - **RAM**: 2GB minimum (4GB+ recommended)
 - **CPU**: 2+ cores recommended for transcoding

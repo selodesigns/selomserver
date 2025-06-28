@@ -3,20 +3,18 @@ import {
   Box, 
   Card, 
   CardContent, 
-  Grid, 
   Typography, 
   LinearProgress, 
   Chip,
   Stack,
-  Divider
+  Divider,
+  Grid
 } from '@mui/material';
-import { 
-  Memory as MemoryIcon,
-  Storage as StorageIcon,
-  PlayCircle as StreamIcon,
-  Person as ViewerIcon,
-  Movie as MediaIcon
-} from '@mui/icons-material';
+import MemoryIcon from '@mui/icons-material/Memory';
+import StorageIcon from '@mui/icons-material/Storage';
+import StreamIcon from '@mui/icons-material/PlayCircle';
+import ViewerIcon from '@mui/icons-material/Person';
+import MediaIcon from '@mui/icons-material/Movie';
 import { useWebSocket } from '../contexts/WebSocketContext';
 
 // Format bytes to human readable format
@@ -117,7 +115,7 @@ const ServerStats: React.FC = () => {
         
         <Grid container spacing={2}>
           {/* CPU Usage */}
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid size={{ xs: 12, sm: 6, md: 4 }}>
             <Stack direction="row" spacing={1} alignItems="center">
               <MemoryIcon color="primary" />
               <Typography variant="body2">
@@ -133,7 +131,7 @@ const ServerStats: React.FC = () => {
           </Grid>
           
           {/* Memory Usage */}
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid size={{ xs: 12, sm: 6, md: 4 }}>
             <Stack direction="row" spacing={1} alignItems="center">
               <MemoryIcon color="primary" />
               <Typography variant="body2">
@@ -149,7 +147,7 @@ const ServerStats: React.FC = () => {
           </Grid>
           
           {/* Disk Usage */}
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid size={{ xs: 12, sm: 6, md: 4 }}>
             <Stack direction="row" spacing={1} alignItems="center">
               <StorageIcon color="primary" />
               <Typography variant="body2">
@@ -164,7 +162,7 @@ const ServerStats: React.FC = () => {
           </Grid>
           
           {/* Active Streams */}
-          <Grid item xs={6} sm={3}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <Stack direction="row" spacing={1} alignItems="center">
               <StreamIcon color="secondary" />
               <Typography variant="body2">
@@ -174,7 +172,7 @@ const ServerStats: React.FC = () => {
           </Grid>
           
           {/* Active Viewers */}
-          <Grid item xs={6} sm={3}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <Stack direction="row" spacing={1} alignItems="center">
               <ViewerIcon color="secondary" />
               <Typography variant="body2">
@@ -184,7 +182,7 @@ const ServerStats: React.FC = () => {
           </Grid>
           
           {/* Total Media */}
-          <Grid item xs={6} sm={3}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <Stack direction="row" spacing={1} alignItems="center">
               <MediaIcon color="secondary" />
               <Typography variant="body2">
@@ -194,7 +192,7 @@ const ServerStats: React.FC = () => {
           </Grid>
           
           {/* Uptime */}
-          <Grid item xs={6} sm={3}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <Typography variant="body2">
               Uptime: {formatUptime(serverStats.uptime)}
             </Typography>

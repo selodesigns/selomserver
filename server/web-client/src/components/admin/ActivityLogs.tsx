@@ -17,15 +17,20 @@ import {
   InputAdornment,
   Pagination
 } from '@mui/material';
-import {
-  Refresh as RefreshIcon,
-  Search as SearchIcon,
-  FilterList as FilterIcon,
-  GetApp as DownloadIcon,
-  Clear as ClearIcon
-} from '@mui/icons-material';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import { format } from 'date-fns';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import SearchIcon from '@mui/icons-material/Search';
+// import FilterIcon from '@mui/icons-material/FilterList'; // Unused import
+import DownloadIcon from '@mui/icons-material/GetApp';
+import ClearIcon from '@mui/icons-material/Clear';
+import { DataGrid } from '@mui/x-data-grid';
+import type { GridColDef } from '@mui/x-data-grid';
+// Install date-fns: npm install date-fns
+// For now, using simple date formatting function
+const formatDate = (dateString: string): string => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  return date.toLocaleString();
+};
 
 // API Service
 import apiService from '../../services/api';
@@ -68,18 +73,19 @@ const ActivityLogs: React.FC = () => {
     try {
       setLoading(true);
       
-      const params: any = {
-        page,
-        pageSize,
-      };
-      
-      if (logLevel !== 'all') params.level = logLevel;
-      if (source !== 'all') params.source = source;
-      if (searchQuery) params.query = searchQuery;
-      if (dateRange.start) params.startDate = dateRange.start;
-      if (dateRange.end) params.endDate = dateRange.end;
-      
-      const response = await apiService.get('/api/admin/logs', { params });
+      const response = await apiService.request({
+        method: 'GET',
+        url: '/api/admin/logs',
+        params: {
+          page,
+          pageSize,
+          level: logLevel !== 'all' ? logLevel : undefined,
+          source: source !== 'all' ? source : undefined,
+          query: searchQuery || undefined,
+          startDate: dateRange.start ? dateRange.start : undefined,
+          endDate: dateRange.end ? dateRange.end : undefined
+        }
+      });
       
       if (response && response.data) {
         setLogs(response.data.logs || []);
@@ -93,7 +99,7 @@ const ActivityLogs: React.FC = () => {
   };
 
   // Handle page change
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
@@ -126,9 +132,11 @@ const ActivityLogs: React.FC = () => {
       if (dateRange.start) params.startDate = dateRange.start;
       if (dateRange.end) params.endDate = dateRange.end;
       
-      const response = await apiService.get('/api/admin/logs/download', { 
+      const response = await apiService.request({
+        method: 'GET',
+        url: '/api/admin/logs/download',
         params,
-        responseType: 'blob' 
+        responseType: 'blob'
       });
       
       // Create a download link and trigger download
@@ -136,8 +144,9 @@ const ActivityLogs: React.FC = () => {
       const link = document.createElement('a');
       link.href = url;
       
-      const currentDate = format(new Date(), 'yyyy-MM-dd');
-      link.setAttribute('download', `selo-logs-${currentDate}.json`);
+      const currentDate = new Date();
+      const filename = `logs-${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}.csv`;
+      link.setAttribute('download', filename);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -153,8 +162,7 @@ const ActivityLogs: React.FC = () => {
       headerName: 'Timestamp', 
       width: 180,
       renderCell: (params) => {
-        const date = new Date(params.value);
-        return format(date, 'yyyy-MM-dd HH:mm:ss');
+        return formatDate(params.value as string);
       }
     },
     { 
@@ -189,7 +197,7 @@ const ActivityLogs: React.FC = () => {
       field: 'userName', 
       headerName: 'User', 
       width: 150,
-      valueGetter: (params: GridValueGetterParams) => {
+      valueGetter: (params: any) => {
         return params.row.userName || 'System';
       }
     },
@@ -249,16 +257,17 @@ const ActivityLogs: React.FC = () => {
         <Divider sx={{ mb: 2 }} />
         
         <Stack spacing={2} direction={{ xs: 'column', md: 'row' }} alignItems="center" sx={{ mb: 2 }}>
-          <TextField 
-            label="Search Logs" 
+          <TextField
+            fullWidth
             variant="outlined"
+            placeholder="Search logs..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            fullWidth
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton edge="end" onClick={handleSearch}>
+                  <IconButton edge="end" onClick={() => handleSearch()}>
                     <SearchIcon />
                   </IconButton>
                 </InputAdornment>
@@ -334,9 +343,11 @@ const ActivityLogs: React.FC = () => {
             <DataGrid
               rows={logs}
               columns={columns}
-              pageSize={pageSize}
-              rowsPerPageOptions={[pageSize]}
-              disableSelectionOnClick
+              paginationModel={{
+                pageSize: pageSize,
+                page: page - 1
+              }}
+              disableRowSelectionOnClick
               disableColumnMenu
               hideFooter
               loading={loading}
@@ -345,7 +356,7 @@ const ActivityLogs: React.FC = () => {
               <Pagination 
                 count={totalPages} 
                 page={page} 
-                onChange={handlePageChange} 
+                onChange={(event, page) => handlePageChange(event, page)} 
                 color="primary" 
               />
             </Box>

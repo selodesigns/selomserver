@@ -19,10 +19,8 @@ import {
   MenuItem,
   InputLabel
 } from '@mui/material';
-import {
-  Save as SaveIcon,
-  Refresh as RefreshIcon,
-} from '@mui/icons-material';
+import SaveIcon from '@mui/icons-material/Save';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 // API Service
 import apiService from '../../services/api';

@@ -218,20 +218,18 @@ class SELOMediaServer {
    * @private
    */
   _setupMiddleware() {
-    this.logger.info('Setting up middleware');
+    // Basic middleware setup
+    this.app.use(helmet()); // Security headers
+    this.app.use(cors());    // CORS support
+    this.app.use(compression()); // Response compression
+    this.app.use(express.json()); // Parse JSON requests
+    this.app.use(express.urlencoded({ extended: true })); // Parse URL-encoded requests
     
-    // Security middleware
-    this.app.use(helmet());
-    this.app.use(cors());
+    // Serve static files from the React app
+    const webClientPath = path.join(__dirname, 'web-client');
+    this.app.use(express.static(webClientPath));
     
-    // Response compression
-    this.app.use(compression());
-    
-    // Request parsing
-    this.app.use(express.json());
-    this.app.use(express.urlencoded({ extended: true }));
-    
-    // Request logging middleware
+    // Request logging
     this.app.use((req, res, next) => {
       this.logger.debug(`${req.method} ${req.url}`);
       next();
@@ -275,8 +273,8 @@ class SELOMediaServer {
       `.trim());
     });
     
-    // Root endpoint
-    this.app.get('/', (req, res) => {
+    // API root endpoint
+    this.app.get('/api', (req, res) => {
       res.json({
         name: this.config.serverName,
         version: this.config.version,
@@ -294,9 +292,11 @@ class SELOMediaServer {
     this.app.use('/api/stream', streamRoutes);
     this.app.use('/api/admin', adminRoutes); // Mount admin routes
     
-    // 404 handler
-    this.app.use((req, res) => {
-      res.status(404).json({ error: 'Not Found' });
+    // Catch-all route to handle React Router
+    // Place this after all API routes but before error handlers
+    this.app.get('*', (req, res) => {
+      // Send the main index.html file for any client-side routes
+      res.sendFile(path.join(__dirname, 'web-client', 'index.html'));
     });
     
     // Error handler

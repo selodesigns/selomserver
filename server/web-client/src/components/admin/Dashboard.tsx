@@ -17,16 +17,14 @@ import {
   IconButton,
   Tooltip
 } from '@mui/material';
-import {
-  Storage as StorageIcon,
-  Memory as MemoryIcon,
-  Speed as SpeedIcon,
-  Person as PersonIcon,
-  Movie as MovieIcon,
-  Refresh as RefreshIcon,
-  PlayArrow as PlayArrowIcon,
-  Save as SaveIcon,
-} from '@mui/icons-material';
+import StorageIcon from '@mui/icons-material/Storage';
+import MemoryIcon from '@mui/icons-material/Memory';
+import SpeedIcon from '@mui/icons-material/Speed';
+import PersonIcon from '@mui/icons-material/Person';
+import MovieIcon from '@mui/icons-material/Movie';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import SaveIcon from '@mui/icons-material/Save';
 
 // Import services
 import { useWebSocket } from '../../contexts/WebSocketContext';
@@ -127,7 +125,7 @@ const AdminDashboard: React.FC = () => {
         <React.Fragment>
           {/* System Status Cards */}
           <Grid container spacing={3} mb={4}>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardHeader 
                   avatar={<Avatar sx={{ bgcolor: 'primary.main' }}><MemoryIcon /></Avatar>}
@@ -151,7 +149,7 @@ const AdminDashboard: React.FC = () => {
               </Card>
             </Grid>
             
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardHeader 
                   avatar={<Avatar sx={{ bgcolor: 'secondary.main' }}><StorageIcon /></Avatar>}
@@ -175,7 +173,7 @@ const AdminDashboard: React.FC = () => {
               </Card>
             </Grid>
             
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardHeader 
                   avatar={<Avatar sx={{ bgcolor: 'success.main' }}><SaveIcon /></Avatar>}
@@ -199,7 +197,7 @@ const AdminDashboard: React.FC = () => {
               </Card>
             </Grid>
             
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardHeader 
                   avatar={<Avatar sx={{ bgcolor: 'warning.main' }}><SpeedIcon /></Avatar>}
@@ -222,7 +220,7 @@ const AdminDashboard: React.FC = () => {
           
           {/* Server Status Cards */}
           <Grid container spacing={3} mb={4}>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" component="div">
@@ -236,7 +234,7 @@ const AdminDashboard: React.FC = () => {
               </Card>
             </Grid>
             
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" component="div">
@@ -250,7 +248,7 @@ const AdminDashboard: React.FC = () => {
               </Card>
             </Grid>
             
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" component="div">
@@ -264,7 +262,7 @@ const AdminDashboard: React.FC = () => {
               </Card>
             </Grid>
             
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" component="div">
@@ -281,7 +279,7 @@ const AdminDashboard: React.FC = () => {
           
           {/* Recent Activity */}
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Card>
                 <CardHeader title="Recent Activity" />
                 <CardContent>

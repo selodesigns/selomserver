@@ -19,26 +19,26 @@ import {
   Snackbar,
   CircularProgress
 } from '@mui/material';
-import {
-  Add as AddIcon,
-  Delete as DeleteIcon,
-  Edit as EditIcon,
-  Lock as LockIcon,
-  LockOpen as LockOpenIcon,
-  Refresh as RefreshIcon
-} from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import LockIcon from '@mui/icons-material/Lock';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 // DataGrid for User table
 import { 
-  DataGrid, 
-  GridColDef, 
-  GridRenderCellParams,
+  DataGrid,
   GridToolbar
+} from '@mui/x-data-grid';
+import type { 
+  GridColDef, 
+  GridRenderCellParams 
 } from '@mui/x-data-grid';
 
 // API Service
 import apiService from '../../services/api';
-import { User } from '../../types';
+import type { User } from '../../types';
 
 // User Management Component
 const UserManagement: React.FC = () => {
@@ -373,8 +373,8 @@ const UserManagement: React.FC = () => {
           columns={columns}
           loading={loading}
           disableRowSelectionOnClick
-          components={{
-            Toolbar: GridToolbar,
+          slots={{
+            toolbar: GridToolbar,
           }}
           initialState={{
             pagination: {

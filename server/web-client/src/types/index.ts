@@ -8,6 +8,8 @@ export interface Library {
   mediaCount: number;
   createdAt: string;
   updatedAt: string;
+  scanAutomatically?: boolean;
+  totalSize?: number;
 }
 
 export interface Media {
