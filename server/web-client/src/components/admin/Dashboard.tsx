@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
-  Paper,
   Grid,
   CircularProgress,
   Divider,
@@ -27,12 +26,11 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SaveIcon from '@mui/icons-material/Save';
 
 // Import services
-import { useWebSocket } from '../../contexts/WebSocketContext';
+
 import apiService from '../../services/api';
-import { ServerStats } from '../../types';
+import type { ServerStats } from '../../types';
 
 const AdminDashboard: React.FC = () => {
-  const { isConnected } = useWebSocket();
   const [loading, setLoading] = useState<boolean>(true);
   const [serverStats, setServerStats] = useState<ServerStats | null>(null);
   const [recentActivity, setRecentActivity] = useState<any[]>([]);

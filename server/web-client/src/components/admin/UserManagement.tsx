@@ -10,14 +10,12 @@ import {
   DialogContentText,
   DialogTitle,
   TextField,
-  FormControl,
   FormControlLabel,
   Checkbox,
   IconButton,
   Tooltip,
   Alert,
-  Snackbar,
-  CircularProgress
+  Snackbar
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -54,7 +52,15 @@ const UserManagement: React.FC = () => {
   const [resetPasswordDialogOpen, setResetPasswordDialogOpen] = useState<boolean>(false);
   
   // Form data
-  const [formData, setFormData] = useState({
+  interface UserFormData {
+    username: string;
+    password?: string;
+    email: string;
+    name: string;
+    isAdmin: boolean;
+  }
+
+  const [formData, setFormData] = useState<UserFormData>({
     username: '',
     password: '',
     email: '',
@@ -208,10 +214,11 @@ const UserManagement: React.FC = () => {
     try {
       setLoading(true);
       
-      const userData = {
+      const userData: Record<string, any> = {
         ...formData,
         id: selectedUser.id
       };
+
       
       // If password is empty, remove it from the request
       if (!userData.password) {
@@ -284,11 +291,11 @@ const UserManagement: React.FC = () => {
     { field: 'username', headerName: 'Username', width: 150 },
     { field: 'email', headerName: 'Email', width: 200 },
     { field: 'name', headerName: 'Name', width: 150 },
-    { 
+    {
       field: 'isAdmin', 
       headerName: 'Admin', 
       width: 100,
-      renderCell: (params: GridRenderCellParams<any>) => (
+      renderCell: (params: GridRenderCellParams<User>) => (
         params.value ? <LockIcon color="primary" /> : <LockOpenIcon />
       )
     },
@@ -296,7 +303,7 @@ const UserManagement: React.FC = () => {
       field: 'lastLogin', 
       headerName: 'Last Login', 
       width: 200,
-      valueFormatter: (params) => {
+      valueFormatter: (params: { value: any }) => {
         return params.value ? new Date(params.value).toLocaleString() : 'Never';
       }
     },

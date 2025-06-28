@@ -102,6 +102,7 @@ router.post('/login', async (req, res) => {
     }
 
     // Check if user exists (by username or email)
+    logger.debug(`Login attempt for username/email: ${username}`);
     const user = await User.findOne({
       where: {
         [Op.or]: [
@@ -110,6 +111,7 @@ router.post('/login', async (req, res) => {
         ]
       }
     });
+    logger.debug(`User lookup result: ${user ? 'FOUND' : 'NOT FOUND'}`);
 
     if (!user) {
       return res.status(400).json({
@@ -120,6 +122,7 @@ router.post('/login', async (req, res) => {
 
     // Check password
     const isMatch = await bcrypt.compare(password, user.password_hash);
+    logger.debug(`Password match result: ${isMatch}`);
     
     if (!isMatch) {
       return res.status(400).json({

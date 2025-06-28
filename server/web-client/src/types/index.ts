@@ -70,6 +70,32 @@ export interface LoginResponse {
   message?: string;
 }
 
+export interface ServerStats {
+  cpu: {
+    usage: number;
+    cores?: number;
+    [key: string]: any;
+  };
+  memory: {
+    usage: number;
+    total?: number;
+    free?: number;
+    [key: string]: any;
+  };
+  disk?: {
+    usage: number;
+    total?: number;
+    free?: number;
+    [key: string]: any;
+  };
+  network?: {
+    rx?: number;
+    tx?: number;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
 export interface AuthError {
   success: boolean;
   message: string;
