@@ -1,7 +1,8 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { User } = require('../models');
+const { User, sequelize } = require('../models');
+const { Op } = require('sequelize');
 const { authenticateToken, generateToken, generateRefreshToken } = require('../middleware/auth');
 const { logger } = require('../utils/Logger');
 
@@ -27,7 +28,7 @@ router.post('/register', async (req, res) => {
     // Check if user already exists
     const existingUser = await User.findOne({
       where: {
-        [User.sequelize.Op.or]: [
+        [Op.or]: [
           { username },
           { email }
         ]
@@ -103,7 +104,7 @@ router.post('/login', async (req, res) => {
     // Check if user exists (by username or email)
     const user = await User.findOne({
       where: {
-        [User.sequelize.Op.or]: [
+        [Op.or]: [
           { username },
           { email: username } // Allow login with email too
         ]
