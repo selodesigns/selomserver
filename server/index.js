@@ -329,7 +329,13 @@ class SELOMediaServer {
     });
     
     process.on('unhandledRejection', (reason, promise) => {
-      this.logger.error('Unhandled rejection', { reason, promise });
+      if (reason instanceof Error) {
+        this.logger.error('Unhandled rejection:', reason.message, reason.stack);
+        console.error('Unhandled rejection:', reason.message, reason.stack);
+      } else {
+        this.logger.error('Unhandled rejection:', JSON.stringify(reason));
+        console.error('Unhandled rejection:', reason);
+      }
       gracefulShutdown();
     });
   }
