@@ -4,6 +4,7 @@
   "description": "SELO Media Server - A Plex-like media streaming platform",
   "main": "server/index.js",
   "scripts": {
+    "prestart": "cd server/web-client && npm install && npm run build",
     "start": "node server/index.js",
     "dev": "nodemon server/index.js",
     "setup": "node scripts/setup.js",

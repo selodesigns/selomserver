@@ -225,9 +225,9 @@ class SELOMediaServer {
     this.app.use(express.json()); // Parse JSON requests
     this.app.use(express.urlencoded({ extended: true })); // Parse URL-encoded requests
     
-    // Serve static files from the React app
-    const webClientPath = path.join(__dirname, 'web-client');
-    this.app.use(express.static(webClientPath));
+    // Serve static files from the React app build
+    const webClientDistPath = path.join(__dirname, 'web-client', 'dist');
+    this.app.use(express.static(webClientDistPath));
     
     // Request logging
     this.app.use((req, res, next) => {
@@ -296,7 +296,7 @@ class SELOMediaServer {
     // Place this after all API routes but before error handlers
     this.app.get('*', (req, res) => {
       // Send the main index.html file for any client-side routes
-      res.sendFile(path.join(__dirname, 'web-client', 'index.html'));
+      res.sendFile(path.join(__dirname, 'web-client', 'dist', 'index.html'));
     });
     
     // Error handler
