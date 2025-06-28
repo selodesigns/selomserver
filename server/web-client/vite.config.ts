@@ -27,12 +27,11 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ['hls.js', '@popperjs/core', 'engine.io-parser'],
+      // All dependencies are now bundled
+      // external: [],
       output: {
         globals: {
-          'hls.js': 'Hls',
-          '@popperjs/core': 'Popper',
-          'engine.io-parser': 'EngineIoParser'
+          'hls.js': 'Hls'
         }
       }
     }

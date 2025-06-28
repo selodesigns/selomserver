@@ -9,7 +9,7 @@ import {
   Alert,
 } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
-import { LoadingButton } from '@mui/lab';
+
 import LoginIcon from '@mui/icons-material/Login';
 
 interface LoginProps {
@@ -107,17 +107,17 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
               disabled={isLoading}
             />
             
-            <LoadingButton
+            <Button
               type="submit"
               fullWidth
               variant="contained"
               loading={isLoading}
-              loadingPosition="start"
               startIcon={<LoginIcon />}
               sx={{ mt: 3, mb: 2 }}
+              disabled={isLoading}
             >
               {isLoading ? 'Logging in...' : 'Log In'}
-            </LoadingButton>
+            </Button>
           </Box>
         </Paper>
       </Box>

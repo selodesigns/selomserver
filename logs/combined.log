@@ -19,3 +19,102 @@
 2025-06-24 00:05:22 [INFO] [SELO-Media-Server] Version: 1.0.0
 2025-06-24 00:05:22 [INFO] [SELO-Media-Server] Listening on: http://localhost:3240
 2025-06-24 00:05:22 [INFO] [SELO-Media-Server] 
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] WebSocketService initialized
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] Initializing SELO Media Server...
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] Ensuring data directories exist
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] Initializing database...
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] Testing database connection...
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] Database connection established successfully.
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] Synchronizing database models...
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] Database models synchronized successfully.
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] Initializing StreamManager...
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] StreamManager initialized
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] Setting up routes
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] Initializing media scanner...
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] Initializing MediaScanner...
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] Found 0 enabled libraries to scan
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] MediaScanner initialized successfully
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] SELO Media Server initialized successfully
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] WebSocketService initialized with Socket.IO
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] 
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] 🎬 SELO Media Server Started!
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] Server Name: SELOHome
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] Server ID: abcde12345-demo-server-id
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] Version: 1.0.0
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] Listening on: http://localhost:3241
+2025-06-27 23:31:38 [INFO] [SELO-Media-Server] 
+2025-06-27 23:32:13 [INFO] [SELO-Media-Server] Received shutdown signal
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] WebSocketService initialized
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] Initializing SELO Media Server...
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] Ensuring data directories exist
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] Initializing database...
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] Testing database connection...
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] Database connection established successfully.
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] Synchronizing database models...
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] Database models synchronized successfully.
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] Initializing StreamManager...
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] StreamManager initialized
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] Setting up routes
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] Initializing media scanner...
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] Initializing MediaScanner...
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] Found 0 enabled libraries to scan
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] MediaScanner initialized successfully
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] SELO Media Server initialized successfully
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] WebSocketService initialized with Socket.IO
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] 
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] 🎬 SELO Media Server Started!
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] Server Name: SELOHome
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] Server ID: abcde12345-demo-server-id
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] Version: 1.0.0
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] Listening on: http://localhost:3241
+2025-06-27 23:32:39 [INFO] [SELO-Media-Server] 
+2025-06-27 23:34:49 [INFO] [SELO-Media-Server] Received shutdown signal
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] WebSocketService initialized
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] Initializing SELO Media Server...
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] Ensuring data directories exist
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] Initializing database...
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] Testing database connection...
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] Database connection established successfully.
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] Synchronizing database models...
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] Database models synchronized successfully.
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] Initializing StreamManager...
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] StreamManager initialized
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] Setting up routes
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] Initializing media scanner...
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] Initializing MediaScanner...
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] Found 0 enabled libraries to scan
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] MediaScanner initialized successfully
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] SELO Media Server initialized successfully
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] WebSocketService initialized with Socket.IO
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] 
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] 🎬 SELO Media Server Started!
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] Server Name: SELOHome
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] Server ID: abcde12345-demo-server-id
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] Version: 1.0.0
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] Listening on: http://localhost:3241
+2025-06-27 23:34:59 [INFO] [SELO-Media-Server] 
+2025-06-27 23:36:53 [INFO] [SELO-Media-Server] Received shutdown signal
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] WebSocketService initialized
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] Initializing SELO Media Server...
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] Ensuring data directories exist
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] Initializing database...
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] Testing database connection...
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] Database connection established successfully.
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] Synchronizing database models...
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] Database models synchronized successfully.
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] Initializing StreamManager...
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] StreamManager initialized
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] Initializing media scanner...
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] Initializing MediaScanner...
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] Found 0 enabled libraries to scan
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] MediaScanner initialized successfully
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] SELO Media Server initialized successfully
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] WebSocketService initialized with Socket.IO
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] 
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] 🎬 SELO Media Server Started!
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] Server Name: SELOHome
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] Server ID: abcde12345-demo-server-id
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] Version: 1.0.0
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] Listening on: http://localhost:3241
+2025-06-27 23:39:26 [INFO] [SELO-Media-Server] 
+2025-06-27 23:41:01 [INFO] [SELO-Media-Server] Received shutdown signal

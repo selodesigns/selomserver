@@ -241,63 +241,6 @@ class SELOMediaServer {
    * @private
    */
   _setupRoutes() {
-    this.logger.info('Setting up routes');
-    
-    // Import API routes
-    const libraryRoutes = require('./routes/library');
-    const streamRoutes = require('./routes/stream')(this.streamManager); // Initialize with streamManager
-    const adminRoutes = require('./routes/admin'); // Admin routes for server management
-    
-    // Health check endpoint
-    this.app.get('/status', (req, res) => {
-      const uptime = this.startTime ? Math.floor((new Date() - this.startTime) / 1000) : 0;
-      
-      res.json({
-        status: 'ok',
-        serverName: this.config.serverName,
-        version: this.config.version,
-        uptime
-      });
-    });
-    
-    // Server identity endpoint (similar to Plex)
-    this.app.get('/identity', (req, res) => {
-      res.set('Content-Type', 'application/xml');
-      res.send(`
-        <?xml version="1.0" encoding="UTF-8"?>
-        <MediaContainer size="1">
-          <Server name="${this.config.serverName}" 
-                  identifier="${this.config.serverId}"
-                  version="${this.config.version}" />
-        </MediaContainer>
-      `.trim());
-    });
-    
-    // API root endpoint
-    this.app.get('/api', (req, res) => {
-      res.json({
-        name: this.config.serverName,
-        version: this.config.version,
-        id: this.config.serverId,
-        endpoints: {
-          status: '/status',
-          identity: '/identity',
-          api: '/api/*'
-        }
-      });
-    });
-    
-    // API routes
-    this.app.use('/api/library', libraryRoutes);
-    this.app.use('/api/stream', streamRoutes);
-    this.app.use('/api/admin', adminRoutes); // Mount admin routes
-    
-    // Catch-all route to handle React Router
-    // Place this after all API routes but before error handlers
-    this.app.get('*', (req, res) => {
-      // Send the main index.html file for any client-side routes
-      res.sendFile(path.join(__dirname, 'web-client', 'dist', 'index.html'));
-    });
     
     // Error handler
     this.app.use((err, req, res, next) => {
