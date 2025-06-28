@@ -165,7 +165,7 @@ JWT_SECRET=${jwtSecret}
         const adminUser = await User.create({
           username,
           email,
-          password: hashedPassword,
+          password_hash: hashedPassword,
           display_name: displayName,
           is_admin: true,
           created_at: new Date(),

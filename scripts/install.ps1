@@ -91,20 +91,34 @@ try {
 # Install dependencies
 Write-Host "`nInstalling Node.js dependencies..." -ForegroundColor Yellow
 npm install
-Push-Location server
-npm install
-Pop-Location
+
+# Check if server directory exists
+if (Test-Path -Path "server") {
+    Write-Host "Server directory found, installing dependencies..." -ForegroundColor Green
+    Push-Location -Path "server"
+    npm install
+    Pop-Location
+} else {
+    Write-Host "Server directory not found at: $(Resolve-Path .)\server" -ForegroundColor Red
+    Write-Host "Creating server directory..." -ForegroundColor Yellow
+    New-Item -ItemType Directory -Force -Path "server" | Out-Null
+}
 
 # Create necessary directories
 Write-Host "`nCreating necessary directories..." -ForegroundColor Yellow
-New-Item -ItemType Directory -Force -Path server\data\media | Out-Null
-New-Item -ItemType Directory -Force -Path server\data\thumbnails | Out-Null
-New-Item -ItemType Directory -Force -Path server\data\cache | Out-Null
-New-Item -ItemType Directory -Force -Path server\logs | Out-Null
+New-Item -ItemType Directory -Force -Path "server\data\media" | Out-Null
+New-Item -ItemType Directory -Force -Path "server\data\thumbnails" | Out-Null
+New-Item -ItemType Directory -Force -Path "server\data\cache" | Out-Null
+New-Item -ItemType Directory -Force -Path "server\logs" | Out-Null
 
 # Run setup script
 Write-Host "`nRunning SELO Media Server setup..." -ForegroundColor Yellow
-node scripts/setup.js
+if (Test-Path -Path "scripts\setup.js") {
+    node "scripts\setup.js"
+} else {
+    Write-Host "Setup script not found at: $(Resolve-Path .)\scripts\setup.js" -ForegroundColor Red
+    Write-Host "Skipping setup script." -ForegroundColor Yellow
+}
 
 Write-Host "`n==================================================" -ForegroundColor Green
 Write-Host "SELO Media Server has been successfully installed!" -ForegroundColor Green
