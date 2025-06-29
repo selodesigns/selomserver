@@ -108,56 +108,56 @@ JWT_SECRET=${jwtSecret}
     await fs.writeFile(ENV_FILE_PATH, envContent);
     console.log(`\nConfiguration saved to ${ENV_FILE_PATH}`);
     
-    // Ask if user wants to set up an admin account
-    const setupAdmin = await question('Set up admin account? (y/n)', 'y');
+    // Always set up an admin account with user-provided credentials
+    console.log('\n📝 Admin Account Setup');
+    console.log('An admin account is required for first login.');
     
-    if (setupAdmin.toLowerCase() === 'y' || setupAdmin.toLowerCase() === 'yes') {
-      // Check if database models are initialized
-      if (!fs.existsSync(DB_CONFIG_PATH) || !fs.existsSync(USER_MODEL_PATH)) {
-        console.error('\nError: Database configuration files not found. Please run: npm install');
-        return;
+    // Check if database models are initialized
+    if (!fs.existsSync(DB_CONFIG_PATH) || !fs.existsSync(USER_MODEL_PATH)) {
+      console.error('\nError: Database configuration files not found. Please run: npm install');
+      return;
+    }
+    
+    console.log('\n📝 Creating Admin User\n');
+    
+    const username = await question('Admin username', 'admin');
+    
+    // Email with validation
+    let email;
+    const validateEmail = (email) => {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    };
+    
+    do {
+      email = await question('Admin email (e.g. admin@example.com)');
+      if (!email) {
+        console.log('Email is required.');
+      } else if (!validateEmail(email)) {
+        console.log('Please enter a valid email address (e.g. admin@example.com)');
+      }
+    } while (!email || !validateEmail(email));
+    
+    const displayName = await question('Admin display name', username);
+    
+    // Password with confirmation
+    let password, confirmPassword;
+    do {
+      password = await question('Password (min 8 chars)');
+      if (password.length < 8) {
+        console.log('Password must be at least 8 characters long.');
+        continue;
       }
       
-      console.log('\n📝 Creating Admin User\n');
+      confirmPassword = await question('Confirm password');
       
-      const username = await question('Admin username', 'admin');
-      
-      // Email with validation
-      let email;
-      const validateEmail = (email) => {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-      };
-      
-      do {
-        email = await question('Admin email (e.g. admin@example.com)');
-        if (!email) {
-          console.log('Email is required.');
-        } else if (!validateEmail(email)) {
-          console.log('Please enter a valid email address (e.g. admin@example.com)');
-        }
-      } while (!email || !validateEmail(email));
-      
-      const displayName = await question('Admin display name', username);
-      
-      // Password with confirmation
-      let password, confirmPassword;
-      do {
-        password = await question('Password (min 8 chars)');
-        if (password.length < 8) {
-          console.log('Password must be at least 8 characters long.');
-          continue;
-        }
-        
-        confirmPassword = await question('Confirm password');
-        
-        if (password !== confirmPassword) {
-          console.log('Passwords do not match. Please try again.');
-        }
-      } while (password.length < 8 || password !== confirmPassword);
-      
-      // Initialize database and create admin user
-      try {
+      if (password !== confirmPassword) {
+        console.log('Passwords do not match. Please try again.');
+      }
+    } while (password.length < 8 || password !== confirmPassword);
+    
+    // Initialize database and create admin user
+    try {
         // Require DB only after .env is created to ensure it picks up the environment variables
         require('dotenv').config({ path: ENV_FILE_PATH });
         console.log('Initializing database...');
@@ -189,10 +189,9 @@ JWT_SECRET=${jwtSecret}
         });
         
         console.log(`\n✅ Admin user '${username}' created successfully!`);
-      } catch (error) {
-        console.error('\nError creating admin user:', error.message);
-        console.error('Please make sure the server package is installed correctly.');
-      }
+    } catch (error) {
+      console.error('\nError creating admin user:', error.message);
+      console.error('Please make sure the server package is installed correctly.');
     }
     
     console.log('\n✅ Setup complete!');
