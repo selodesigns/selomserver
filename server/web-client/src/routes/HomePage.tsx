@@ -45,9 +45,38 @@ const HomePage: React.FC = () => {
   
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4" sx={{ mb: 4 }}>
-        Dashboard
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+        <Typography variant="h4">
+          Dashboard
+        </Typography>
+        <Paper 
+          elevation={2} 
+          sx={{ 
+            p: 1, 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center',
+            bgcolor: 'primary.main', 
+            color: 'white',
+            borderRadius: 2,
+            cursor: 'pointer',
+            '&:hover': {
+              bgcolor: 'primary.dark',
+            },
+            transition: 'background-color 0.3s'
+          }}
+          onClick={() => window.location.href = '/admin?tab=1'}
+        >
+          <Box sx={{ p: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+              Add Media Library
+            </Typography>
+            <Typography variant="body2" sx={{ textAlign: 'center' }}>
+              Point to your media folders
+            </Typography>
+          </Box>
+        </Paper>
+      </Box>
       
       <Stack spacing={3}>
         {/* Server Stats Card */}
