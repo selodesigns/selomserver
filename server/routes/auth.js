@@ -143,9 +143,9 @@ router.post('/login', async (req, res) => {
       id: user.id,
       username: user.username,
       email: user.email,
-      displayName: user.display_name,
+      displayName: user.display_name || user.displayName || user.username || '',
       isAdmin: user.is_admin,
-      createdAt: user.created_at
+      createdAt: user.created_at || user.createdAt || null
     };
 
     res.json({
