@@ -11,6 +11,10 @@ const api = axios.create({
 
 // API service functions
 export const apiService = {
+  get: async (url: string, config?: any) => {
+    const response = await api.get(url, config);
+    return response.data;
+  },
   // Direct axios instance for custom requests
   request: api,
   // Get server status

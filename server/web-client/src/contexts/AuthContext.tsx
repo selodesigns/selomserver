@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
-import api from '../services/api';
+import apiService from '../services/api';
 import type { User } from '../types';
 
 interface AuthContextType {
@@ -37,67 +36,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Set up axios interceptor for authentication
-  useEffect(() => {
-    const requestInterceptor = axios.interceptors.request.use(
-      (config) => {
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
-
-    const responseInterceptor = axios.interceptors.response.use(
-      (response) => response,
-      async (error) => {
-        const originalRequest = error.config;
-        
-        // If the error is 401 and we haven't retried yet
-        if (error.response?.status === 401 && !originalRequest._retry && refreshTokenValue) {
-          originalRequest._retry = true;
-          
-          try {
-            // Try to refresh the token
-            await refreshToken();
-            
-            // After refreshing, update the header with the new token
-            originalRequest.headers.Authorization = `Bearer ${token}`;
-            
-            // Retry the original request
-            return axios(originalRequest);
-          } catch (refreshError) {
-            // If refresh fails, log out the user
-            logout();
-            return Promise.reject(refreshError);
-          }
-        }
-        
-        return Promise.reject(error);
-      }
-    );
-
     // Check if user is already authenticated on mount
+  useEffect(() => {
     if (token) {
       fetchCurrentUser();
     } else {
       setIsLoading(false);
     }
-
-    return () => {
-      axios.interceptors.request.eject(requestInterceptor);
-      axios.interceptors.response.eject(responseInterceptor);
-    };
   }, [token]);
 
   const fetchCurrentUser = async () => {
     try {
       setIsLoading(true);
-      const response = await api.get<{success: boolean, user: User}>('/api/auth/me');
-      setUser(response.data.user);
+      const response = await apiService.get('/api/auth/me');
+      setUser(response.user);
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching user data', error);
@@ -107,14 +59,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+
   const login = async (username: string, password: string) => {
     try {
       setError(null);
       setIsLoading(true);
       
-      const response = await api.post('/api/auth/login', { username, password });
+      const response = await apiService.post('/api/auth/login', { username, password });
+      console.log('[AuthContext] /api/auth/login response:', response);
       
-      const { token, refreshToken, user } = response.data;
+      const { token, refreshToken, user } = response;
+      console.log('[AuthContext] Parsed token:', token);
+      console.log('[AuthContext] Parsed refreshToken:', refreshToken);
+      console.log('[AuthContext] Parsed user:', user);
       
       // Save to local storage
       localStorage.setItem('token', token);
@@ -128,6 +85,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setIsLoading(false);
     } catch (error: any) {
       setIsLoading(false);
+      console.error('[AuthContext] Login error:', error);
       const message = error.response?.data?.message || 'Login failed. Please try again.';
       setError(message);
       throw new Error(message);
@@ -152,7 +110,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         throw new Error('No refresh token available');
       }
       
-      const response = await api.post('/api/auth/refresh', { refreshToken: refreshTokenValue });
+      const response = await apiService.post('/api/auth/refresh', { refreshToken: refreshTokenValue });
       
       const { token: newToken, refreshToken: newRefreshToken } = response.data;
       
