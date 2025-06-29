@@ -121,7 +121,23 @@ JWT_SECRET=${jwtSecret}
       console.log('\n📝 Creating Admin User\n');
       
       const username = await question('Admin username', 'admin');
-      const email = await question('Admin email');
+      
+      // Email with validation
+      let email;
+      const validateEmail = (email) => {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+      };
+      
+      do {
+        email = await question('Admin email (e.g. admin@example.com)');
+        if (!email) {
+          console.log('Email is required.');
+        } else if (!validateEmail(email)) {
+          console.log('Please enter a valid email address (e.g. admin@example.com)');
+        }
+      } while (!email || !validateEmail(email));
+      
       const displayName = await question('Admin display name', username);
       
       // Password with confirmation
