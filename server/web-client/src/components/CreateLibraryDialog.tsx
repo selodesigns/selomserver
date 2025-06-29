@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -47,6 +47,19 @@ const CreateLibraryDialog: React.FC<CreateLibraryDialogProps> = ({ open, onClose
   const [directories, setDirectories] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Reset form data when dialog opens
+  useEffect(() => {
+    if (open) {
+      setFormData({
+        name: '',
+        path: '',
+        type: 'movies',
+        scanAutomatically: true
+      });
+      setError(null);
+    }
+  }, [open]);
 
   // Handle input change
   const handleInputChange = (
