@@ -91,11 +91,25 @@ const CreateLibraryDialog: React.FC<CreateLibraryDialogProps> = ({ open, onClose
   // Fetch directories for folder browser
   const fetchDirectories = async (path: string) => {
     try {
-      const response = await apiService.post('/api/admin/directories', { path });
+      setError(null);
+      console.log('Fetching directories for path:', path);
       
-      if (response && response.data) {
-        setDirectories(response.data);
+      // Ensure path is a string
+      if (typeof path !== 'string') {
+        console.error('Invalid path type:', typeof path);
+        setError(`Invalid path format: ${path}`);
+        return;
+      }
+      
+      const response = await apiService.post('/api/admin/directories', { path });
+      console.log('Directory response:', response);
+      
+      if (response && Array.isArray(response)) {
+        setDirectories(response);
         setCurrentPath(path);
+      } else {
+        console.error('Unexpected response format:', response);
+        setError('Invalid server response format');
       }
     } catch (error) {
       console.error('Error fetching directories:', error);
@@ -110,11 +124,21 @@ const CreateLibraryDialog: React.FC<CreateLibraryDialogProps> = ({ open, onClose
 
   // Select directory
   const selectDirectory = (path: string) => {
-    setFormData(prevData => ({
-      ...prevData,
-      path
-    }));
-    setFolderBrowserOpen(false);
+    console.log('Selecting directory path:', path);
+    // Ensure path is a string before setting it
+    if (typeof path === 'string') {
+      setFormData(prevData => {
+        console.log('Updating form data with path:', path);
+        return {
+          ...prevData,
+          path: path
+        };
+      });
+      setFolderBrowserOpen(false);
+    } else {
+      console.error('Invalid path selected:', path);
+      setError('Invalid directory path selected');
+    }
   };
 
   // Handle create library
