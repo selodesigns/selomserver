@@ -598,10 +598,32 @@ const LibraryManagement: React.FC = () => {
             ))
           ) : (
             <Grid size={12}>
-              <Paper sx={{ p: 3, textAlign: 'center' }}>
-                <Typography variant="body1">
-                  No libraries found. Click "Add Library" to create your first library.
-                </Typography>
+              <Paper sx={{ p: 4, textAlign: 'center' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                  <Typography variant="h6" color="text.secondary">
+                    No Media Libraries Found
+                  </Typography>
+                  
+                  <Typography variant="body1" color="text.secondary" sx={{ maxWidth: '600px', mb: 1 }}>
+                    Start by creating your first media library. Libraries allow you to organize your media by type (movies, TV shows, or music).
+                  </Typography>
+                  
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    startIcon={<AddIcon />}
+                    onClick={handleCreateDialogOpen}
+                    sx={{ 
+                      mt: 2, 
+                      fontWeight: 'medium',
+                      minWidth: '200px',
+                      py: 1
+                    }}
+                  >
+                    Create Your First Library
+                  </Button>
+                </Box>
               </Paper>
             </Grid>
           )}
