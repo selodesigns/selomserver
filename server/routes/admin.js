@@ -4,6 +4,9 @@ const { v4: uuidv4 } = require('uuid');
 const { isAuthenticated, isAdmin } = require('../middleware/auth');
 const { logger } = require('../utils/Logger');
 
+// Import sub-routes
+const directoriesRouter = require('./admin/directories');
+
 // In-memory storage for transcoding presets until we add them to the database model
 let transcodingPresets = [
   {
@@ -208,5 +211,8 @@ router.delete('/transcoding/presets/:id', (req, res) => {
     res.status(500).json({ message: 'Failed to delete transcoding preset' });
   }
 });
+
+// Use the directories router
+router.use(directoriesRouter);
 
 module.exports = router;

@@ -58,10 +58,10 @@ const CreateLibraryDialog: React.FC<CreateLibraryDialogProps> = ({ open, onClose
     if (typeof target.checked !== 'undefined') {
       value = target.checked;
     }
-    setFormData({
-      ...formData,
+    setFormData(prevData => ({
+      ...prevData,
       [name]: value
-    });
+    }));
   };
 
   // Handle folder browser dialog
@@ -97,10 +97,10 @@ const CreateLibraryDialog: React.FC<CreateLibraryDialogProps> = ({ open, onClose
 
   // Select directory
   const selectDirectory = (path: string) => {
-    setFormData({
-      ...formData,
+    setFormData(prevData => ({
+      ...prevData,
       path
-    });
+    }));
     setFolderBrowserOpen(false);
   };
 
