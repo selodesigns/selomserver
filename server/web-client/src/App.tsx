@@ -48,34 +48,34 @@ const LoadingSpinner = () => (
 
 // Router component with protected routes
 const AppRouter = () => {
-  const { isLoading } = useAuth();
+  const { isLoading, isAuthenticated } = useAuth();
 
   if (isLoading) {
     return <LoadingSpinner />;
   }
 
   return (
-    <BrowserRouter>
-      <Suspense fallback={<LoadingSpinner />}>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          
-          {/* Protected routes wrapped in MainLayout */}
-          <Route element={
-            <ProtectedRoute>
-              <MainLayout />
-            </ProtectedRoute>
-          }>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/library/:libraryId" element={<LibraryPage />} />
-            <Route path="/media/:mediaId" element={<MediaDetailPage />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Route>
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+    <Suspense fallback={<LoadingSpinner />}>
+      <Routes>
+        <Route path="/login" element={
+          isAuthenticated ? <Navigate to="/" replace /> : <Login />
+        } />
+        
+        {/* Protected routes wrapped in MainLayout */}
+        <Route element={
+          <ProtectedRoute>
+            <MainLayout />
+          </ProtectedRoute>
+        }>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/library/:libraryId" element={<LibraryPage />} />
+          <Route path="/media/:mediaId" element={<MediaDetailPage />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
+      </Routes>
+    </Suspense>
   );
 };
 
@@ -84,17 +84,19 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AuthProvider>
-        <SnackbarProvider 
-          maxSnack={3} 
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          autoHideDuration={5000}
-        >
-          <WebSocketProvider>
-            <AppRouter />
-          </WebSocketProvider>
-        </SnackbarProvider>
-      </AuthProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <SnackbarProvider 
+            maxSnack={3} 
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            autoHideDuration={5000}
+          >
+            <WebSocketProvider>
+              <AppRouter />
+            </WebSocketProvider>
+          </SnackbarProvider>
+        </AuthProvider>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }
