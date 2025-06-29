@@ -6,7 +6,7 @@ const { logger } = require('../../utils/Logger');
 const { isAuthenticated, isAdmin } = require('../../middleware/auth');
 
 // Endpoint to list directories
-router.post('/directories', isAuthenticated, isAdmin, async (req, res) => {
+router.post('/directories', [isAuthenticated, isAdmin], async (req, res) => {
   try {
     const { path: directoryPath } = req.body;
 
