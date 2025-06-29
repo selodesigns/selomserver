@@ -247,6 +247,9 @@ const MediaGrid: React.FC<MediaGridProps> = ({ media, isLoading, libraryType = '
         onClose={handleClosePlayer} 
         maxWidth="lg" 
         fullWidth
+        disableEnforceFocus
+        keepMounted={false}
+        disablePortal
         PaperProps={{
           sx: { 
             backgroundColor: 'background.paper',

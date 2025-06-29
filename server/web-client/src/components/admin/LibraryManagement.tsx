@@ -18,6 +18,8 @@ import {
   Card,
   CardContent,
   CardActions,
+  InputAdornment,
+  Chip,
   FormControl,
   InputLabel,
   Select,
@@ -31,6 +33,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import FolderIcon from '@mui/icons-material/Folder';
+import HomeIcon from '@mui/icons-material/Home';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import FolderOffIcon from '@mui/icons-material/FolderOff';
+import CheckIcon from '@mui/icons-material/Check';
+import InfoIcon from '@mui/icons-material/Info';
+import MovieIcon from '@mui/icons-material/Movie';
+import TvIcon from '@mui/icons-material/Tv';
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import StorageIcon from '@mui/icons-material/Storage';
 
 // API Service
@@ -367,14 +377,12 @@ const LibraryManagement: React.FC = () => {
   // Get library type label
   const getLibraryTypeLabel = (type: string): string => {
     switch (type) {
-      case 'movie':
+      case 'movies':
         return 'Movies';
-      case 'show':
+      case 'tv':
         return 'TV Shows';
       case 'music':
         return 'Music';
-      case 'photo':
-        return 'Photos';
       default:
         return 'Unknown';
     }
@@ -401,8 +409,11 @@ const LibraryManagement: React.FC = () => {
             variant="contained" 
             startIcon={<AddIcon />} 
             onClick={handleCreateDialogOpen}
+            color="primary"
+            size="medium"
+            sx={{ fontWeight: 'bold', px: 2, py: 1 }}
           >
-            Add Library
+            Add Media Library
           </Button>
         </Box>
       </Box>
@@ -419,28 +430,64 @@ const LibraryManagement: React.FC = () => {
               <Grid size={{ xs: 12, sm: 6, md: 4 }} key={library.id}>
                 <Card>
                   <CardContent>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <StorageIcon sx={{ mr: 1 }} />
-                      <Typography variant="h6" component="div">
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, pb: 1, borderBottom: '1px solid #eee' }}>
+                      {library.type === 'movies' && <MovieIcon sx={{ mr: 1, color: 'primary.main' }} />}
+                      {library.type === 'tv' && <TvIcon sx={{ mr: 1, color: 'secondary.main' }} />}
+                      {library.type === 'music' && <MusicNoteIcon sx={{ mr: 1, color: 'success.main' }} />}
+                      {(!library.type || !['movies', 'tv', 'music'].includes(library.type)) && <StorageIcon sx={{ mr: 1 }} />}
+                      <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
                         {library.name}
+                      </Typography>
+                      <Chip 
+                        size="small" 
+                        label={getLibraryTypeLabel(library.type || 'unknown')} 
+                        color={library.type === 'movies' ? 'primary' : 
+                              library.type === 'tv' ? 'secondary' : 
+                              library.type === 'music' ? 'success' : 
+                              'default'}
+                        sx={{ ml: 'auto', fontSize: '0.75rem' }}
+                      />
+                    </Box>
+                    
+                    <Box sx={{ mb: 2 }}>
+                      <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center' }}>
+                        <FolderIcon fontSize="small" sx={{ mr: 0.5, opacity: 0.7 }} />
+                        <Tooltip title={library.path}>
+                          <Box sx={{ 
+                            maxWidth: '100%', 
+                            overflow: 'hidden', 
+                            textOverflow: 'ellipsis', 
+                            whiteSpace: 'nowrap' 
+                          }}>
+                            {library.path}
+                          </Box>
+                        </Tooltip>
                       </Typography>
                     </Box>
                     
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
-                      <strong>Type:</strong> {getLibraryTypeLabel(library.type || 'unknown')}
-                    </Typography>
-                    
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
-                      <strong>Path:</strong> {library.path}
-                    </Typography>
-                    
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
-                      <strong>Items:</strong> {library.mediaCount || 0}
-                    </Typography>
-                    
-                    <Typography variant="body2" color="text.secondary">
-                      <strong>Size:</strong> {formatBytes(library.totalSize || 0)}
-                    </Typography>
+                    <Grid container spacing={2}>
+                      <Grid size={{ xs: 6 }}>
+                        <Paper sx={{ p: 1, bgcolor: 'background.default', textAlign: 'center' }}>
+                          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                            {library.mediaCount || 0}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            Media Items
+                          </Typography>
+                        </Paper>
+                      </Grid>
+                      
+                      <Grid size={{ xs: 6 }}>
+                        <Paper sx={{ p: 1, bgcolor: 'background.default', textAlign: 'center' }}>
+                          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                            {formatBytes(library.totalSize || 0)}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            Total Size
+                          </Typography>
+                        </Paper>
+                      </Grid>
+                    </Grid>
                     
                     {scanningLibraries[library.id] && (
                       <Box sx={{ mt: 2 }}>
@@ -502,12 +549,31 @@ const LibraryManagement: React.FC = () => {
       )}
       
       {/* Create Library Dialog */}
-      <Dialog open={createDialogOpen} onClose={handleCreateDialogClose} maxWidth="sm" fullWidth>
-        <DialogTitle>Add New Library</DialogTitle>
-        <DialogContent>
-          <DialogContentText sx={{ mb: 2 }}>
-            Enter the details for the new library.
-          </DialogContentText>
+      <Dialog 
+        open={createDialogOpen} 
+        onClose={handleCreateDialogClose} 
+        maxWidth="sm" 
+        fullWidth
+        disableEnforceFocus
+        keepMounted={false}
+        disablePortal
+      >
+        <DialogTitle sx={{ borderBottom: '1px solid #e0e0e0', pb: 2 }}>
+          <Typography variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center' }}>
+            <StorageIcon sx={{ mr: 1, color: 'primary.main' }} />
+            Add New Library
+          </Typography>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ mt: 1 }}>
+            Create a new library by specifying a location containing your media files
+          </Typography>
+        </DialogTitle>
+        <DialogContent sx={{ pt: 3 }}>
+          <Box sx={{ mb: 3, p: 2, bgcolor: 'info.main', color: 'info.contrastText', borderRadius: 1, display: 'flex', alignItems: 'center' }}>
+            <InfoIcon sx={{ mr: 1 }} />
+            <Typography variant="body2">
+              Libraries help organize your media collection. Each library should point to a folder containing similar media types.
+            </Typography>
+          </Box>
           
           <TextField
             margin="dense"
@@ -574,7 +640,15 @@ const LibraryManagement: React.FC = () => {
       </Dialog>
       
       {/* Edit Library Dialog */}
-      <Dialog open={editDialogOpen} onClose={handleEditDialogClose} maxWidth="sm" fullWidth>
+      <Dialog 
+        open={editDialogOpen} 
+        onClose={handleEditDialogClose} 
+        maxWidth="sm" 
+        fullWidth
+        disableEnforceFocus
+        keepMounted={false}
+        disablePortal
+      >
         <DialogTitle>Edit Library</DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ mb: 2 }}>
@@ -646,7 +720,13 @@ const LibraryManagement: React.FC = () => {
       </Dialog>
       
       {/* Delete Library Dialog */}
-      <Dialog open={deleteDialogOpen} onClose={handleDeleteDialogClose}>
+      <Dialog 
+        open={deleteDialogOpen} 
+        onClose={handleDeleteDialogClose}
+        disableEnforceFocus
+        keepMounted={false}
+        disablePortal
+      >
         <DialogTitle>Delete Library</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -662,9 +742,59 @@ const LibraryManagement: React.FC = () => {
       </Dialog>
       
       {/* Folder Browser Dialog */}
-      <Dialog open={folderBrowserOpen} onClose={handleFolderBrowserClose} maxWidth="md" fullWidth>
-        <DialogTitle>Browse Folders</DialogTitle>
-        <DialogContent>
+      <Dialog 
+        open={folderBrowserOpen} 
+        onClose={handleFolderBrowserClose} 
+        maxWidth="md" 
+        fullWidth
+        disableEnforceFocus
+        keepMounted={false}
+        disablePortal
+      >
+        <DialogTitle sx={{ borderBottom: '1px solid #e0e0e0', pb: 2 }}>
+          <Typography variant="h6" component="div">
+            <FolderIcon sx={{ mr: 1, verticalAlign: 'middle', color: 'primary.main' }} />
+            Select Media Directory
+          </Typography>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ mt: 1 }}>
+            Choose the folder containing your media files
+          </Typography>
+        </DialogTitle>
+        <DialogContent sx={{ pt: 3 }}>
+          {/* Breadcrumb Navigation */}
+          <Paper sx={{ p: 1, mb: 2, display: 'flex', alignItems: 'center', overflowX: 'auto' }}>
+            <Tooltip title="Root directory">
+              <IconButton 
+                size="small"
+                onClick={() => navigateToDirectory('/')}
+                color={currentPath === '/' ? 'primary' : 'default'}
+              >
+                <HomeIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+            
+            {currentPath !== '/' && currentPath.split('/').filter(Boolean).map((segment, i, segments) => {
+              const path = '/' + segments.slice(0, i + 1).join('/');
+              return (
+                <React.Fragment key={i}>
+                  <Typography variant="body2" color="text.secondary" sx={{ mx: 0.5 }}>
+                    /
+                  </Typography>
+                  <Tooltip title={`Navigate to /${segment}`}>
+                    <Button 
+                      size="small" 
+                      onClick={() => navigateToDirectory(path)}
+                      sx={{ minWidth: 'auto', textTransform: 'none' }}
+                      color="inherit"
+                    >
+                      {segment}
+                    </Button>
+                  </Tooltip>
+                </React.Fragment>
+              );
+            })}
+          </Paper>
+          
           <TextField
             margin="dense"
             name="currentPath"
@@ -673,42 +803,77 @@ const LibraryManagement: React.FC = () => {
             fullWidth
             variant="outlined"
             value={currentPath}
-            InputProps={{ readOnly: true }}
+            InputProps={{ 
+              readOnly: true,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <FolderIcon color="action" />
+                </InputAdornment>
+              )
+            }}
             sx={{ mb: 2 }}
           />
           
-          <Paper sx={{ p: 2, maxHeight: '400px', overflowY: 'auto' }}>
+          <Paper sx={{ p: 2, maxHeight: '400px', overflowY: 'auto', bgcolor: 'background.default', border: '1px solid #e0e0e0' }}>
             {currentPath !== '/' && (
-              <Button 
-                fullWidth
-                sx={{ justifyContent: 'flex-start', textAlign: 'left', mb: 1 }}
-                onClick={() => {
-                  // Navigate to parent directory
-                  const parentPath = currentPath.split('/').slice(0, -1).join('/') || '/';
-                  navigateToDirectory(parentPath);
-                }}
-              >
-                <FolderIcon sx={{ mr: 1 }} /> ..
-              </Button>
+              <Tooltip title="Up to parent directory">
+                <Button 
+                  fullWidth
+                  sx={{ 
+                    justifyContent: 'flex-start', 
+                    textAlign: 'left', 
+                    mb: 1,
+                    borderRadius: 1,
+                    bgcolor: 'action.hover',
+                    '&:hover': { bgcolor: 'action.selected' }
+                  }}
+                  onClick={() => {
+                    // Navigate to parent directory
+                    const parentPath = currentPath.split('/').slice(0, -1).join('/') || '/';
+                    navigateToDirectory(parentPath);
+                  }}
+                  startIcon={<ArrowUpwardIcon />}
+                >
+                  Parent Directory
+                </Button>
+              </Tooltip>
             )}
             
-            {directories.map((dir, index) => (
-              <Button 
-                key={index}
-                fullWidth
-                sx={{ justifyContent: 'flex-start', textAlign: 'left', mb: 1 }}
-                onClick={() => navigateToDirectory(dir)}
-              >
-                <FolderIcon sx={{ mr: 1 }} /> {dir.split('/').pop()}
-              </Button>
-            ))}
+            {directories.length === 0 ? (
+              <Box sx={{ py: 4, textAlign: 'center' }}>
+                <FolderOffIcon sx={{ fontSize: 40, color: 'text.secondary', opacity: 0.5, mb: 1 }} />
+                <Typography variant="body2" color="text.secondary">
+                  No accessible directories found
+                </Typography>
+              </Box>
+            ) : (
+              directories.map((dir, index) => (
+                <Tooltip key={index} title={`Open ${dir.split('/').pop()}`}>
+                  <Button 
+                    fullWidth
+                    sx={{ 
+                      justifyContent: 'flex-start', 
+                      textAlign: 'left', 
+                      mb: 1,
+                      borderRadius: 1,
+                      '&:hover': { bgcolor: 'action.hover' }
+                    }}
+                    onClick={() => navigateToDirectory(dir)}
+                  >
+                    <FolderIcon sx={{ mr: 1, color: 'primary.light' }} /> {dir.split('/').pop()}
+                  </Button>
+                </Tooltip>
+              ))
+            )}
           </Paper>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleFolderBrowserClose}>Cancel</Button>
+        <DialogActions sx={{ borderTop: '1px solid #e0e0e0', py: 2 }}>
+          <Button onClick={handleFolderBrowserClose} color="inherit">Cancel</Button>
           <Button 
             onClick={() => selectDirectory(currentPath)} 
             variant="contained"
+            startIcon={<CheckIcon />}
+            color="primary"
           >
             Select This Folder
           </Button>
