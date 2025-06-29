@@ -259,11 +259,53 @@ const LibraryManagement: React.FC = () => {
   
   // Select directory
   const selectDirectory = (path: string) => {
-    setFormData({
-      ...formData,
-      path
-    });
+    // If there's a selected library, it means we're adding a directory to an existing library
+    if (selectedLibrary) {
+      // Update the library with the new path
+      const updatedFormData = {
+        name: selectedLibrary.name,
+        path: path,
+        type: selectedLibrary.type,
+        scanAutomatically: selectedLibrary.scanAutomatically !== false
+      };
+      
+      // Set the form data and update the library
+      setFormData(updatedFormData);
+      updateLibraryPath(selectedLibrary.id, path);
+    } else {
+      // Otherwise, just update the form data for creating a new library
+      setFormData({
+        ...formData,
+        path
+      });
+    }
+    
     setFolderBrowserOpen(false);
+  };
+  
+  // Update library path (for adding media directory)
+  const updateLibraryPath = async (libraryId: number, path: string) => {
+    try {
+      setLoading(true);
+      
+      const response = await apiService.post(`/api/library/sections/${libraryId}`, {
+        name: selectedLibrary?.name || '',
+        path: path,
+        type: selectedLibrary?.type || 'movies',
+        scanAutomatically: selectedLibrary?.scanAutomatically !== false
+      });
+      
+      if (response && response.data) {
+        showNotification(`Media directory added to library: ${path}`, 'success');
+        fetchLibraries(); // Refresh libraries to show updated path
+      }
+    } catch (error) {
+      console.error('Error updating library path:', error);
+      showNotification('Failed to add media directory to library', 'error');
+    } finally {
+      setLoading(false);
+      setSelectedLibrary(null);
+    }
   };
   
   // Create library
@@ -503,35 +545,53 @@ const LibraryManagement: React.FC = () => {
                     )}
                   </CardContent>
                   
-                  <CardActions>
-                    <Tooltip title="Edit Library">
-                      <IconButton 
-                        onClick={() => handleEditDialogOpen(library)}
-                        size="small"
-                      >
-                        <EditIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
+                  <CardActions sx={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', padding: '8px 16px' }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      startIcon={<FolderIcon />}
+                      onClick={() => {
+                        setSelectedLibrary(library);
+                        handleFolderBrowserOpen();
+                      }}
+                      sx={{ mb: 1, fontWeight: 'medium' }}
+                      fullWidth
+                    >
+                      Add Media Directory
+                    </Button>
                     
-                    <Tooltip title="Scan Library">
-                      <IconButton 
-                        onClick={() => scanLibrary(library)}
-                        size="small"
-                        disabled={scanningLibraries[library.id]}
-                      >
-                        <RefreshIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                    
-                    <Tooltip title="Delete Library">
-                      <IconButton 
-                        onClick={() => handleDeleteDialogOpen(library)}
-                        size="small"
-                        color="error"
-                      >
-                        <DeleteIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Box>
+                        <Tooltip title="Edit Library Settings">
+                          <IconButton 
+                            onClick={() => handleEditDialogOpen(library)}
+                            size="small"
+                          >
+                            <EditIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                        
+                        <Tooltip title="Scan Library for New Media">
+                          <IconButton 
+                            onClick={() => scanLibrary(library)}
+                            size="small"
+                            disabled={scanningLibraries[library.id]}
+                          >
+                            <RefreshIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+                      
+                      <Tooltip title="Delete Library">
+                        <IconButton 
+                          onClick={() => handleDeleteDialogOpen(library)}
+                          size="small"
+                          color="error"
+                        >
+                          <DeleteIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
                   </CardActions>
                 </Card>
               </Grid>
