@@ -3,10 +3,10 @@ const router = express.Router();
 const path = require('path');
 const fs = require('fs').promises;
 const { logger } = require('../../utils/Logger');
-const { isAuthenticated, isAdmin } = require('../../middleware/auth');
+const { authenticateToken, requireAdmin } = require('../../middleware/auth');
 
 // Endpoint to list directories
-router.post('/directories', [isAuthenticated, isAdmin], async (req, res) => {
+router.post('/api/admin/directories', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const { path: directoryPath } = req.body;
 
