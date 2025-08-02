@@ -77,7 +77,7 @@ The quick start script will:
 4. Create necessary directories
 5. Start the server
 
-After installation, access SELO Media Server at: http://localhost:32400
+After installation, access SELO Media Server at: http://localhost:32420
 
 ---
 
@@ -168,13 +168,13 @@ SELO Media Server provides a comprehensive REST API for integration with other a
 
 ```bash
 # Get server info
-curl -X GET http://localhost:32400/api/server/info -H "Authorization: Bearer YOUR_TOKEN"
+curl -X GET http://localhost:32420/api/server/info -H "Authorization: Bearer YOUR_TOKEN"
 
 # List all movies
-curl -X GET http://localhost:32400/api/library/movies -H "Authorization: Bearer YOUR_TOKEN"
+curl -X GET http://localhost:32420/api/library/movies -H "Authorization: Bearer YOUR_TOKEN"
 
 # Start playback
-curl -X POST http://localhost:32400/api/playback/start -H "Authorization: Bearer YOUR_TOKEN" \
+curl -X POST http://localhost:32420/api/playback/start -H "Authorization: Bearer YOUR_TOKEN" \
   -d '{"mediaId": "123", "quality": "1080p"}'
 ```
 

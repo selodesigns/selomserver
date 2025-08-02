@@ -169,9 +169,21 @@ class WebSocketService extends EventEmitter {
    * @returns {Promise<number>} - Disk usage percentage
    */
   async getDiskUsage() {
-    // This is a placeholder - you'd need to use a library like 'diskusage'
-    // or run a command to get actual disk usage
-    return 0;
+    // Get disk usage for the DATA_PATH or root directory
+    const path = process.env.DATA_PATH || '/';
+    const { exec } = require('child_process');
+    return new Promise((resolve, reject) => {
+      exec(`df -k --output=used,size ${path} | tail -n 1`, (err, stdout) => {
+        if (err) {
+          logger.error('Failed to get disk usage', err);
+          return resolve(0);
+        }
+        const [used, size] = stdout.trim().split(/\s+/).map(Number);
+        if (!used || !size) return resolve(0);
+        const percent = (used / size) * 100;
+        resolve(percent);
+      });
+    });
   }
   
   /**
@@ -179,8 +191,27 @@ class WebSocketService extends EventEmitter {
    * @returns {number} - Active stream count
    */
   getActiveStreamCount() {
-    // This should be linked to your StreamManager
-    return 0;
+    // Link to StreamManager to get active stream count
+    try {
+      const StreamManager = require('./StreamManager');
+      if (StreamManager && StreamManager.instance && typeof StreamManager.instance.getActiveStreams === 'function') {
+        return StreamManager.instance.getActiveStreams().size;
+      }
+      // Fallback: if StreamManager is not a singleton, try requiring the exported class and using a global instance
+      if (global.streamManager && typeof global.streamManager.getActiveStreams === 'function') {
+        return global.streamManager.getActiveStreams().size;
+      }
+      // If not found, try static instance
+      if (StreamManager._instance && typeof StreamManager._instance.getActiveStreams === 'function') {
+        return StreamManager._instance.getActiveStreams().size;
+      }
+      // If not found, log warning
+      logger.warn('StreamManager instance not found for active stream count');
+      return 0;
+    } catch (err) {
+      logger.error('Error retrieving active stream count from StreamManager', err);
+      return 0;
+    }
   }
   
   /**

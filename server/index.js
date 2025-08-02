@@ -22,7 +22,7 @@ class SELOMediaServer {
   constructor(options = {}) {
     // Set server configuration from .env or parameters
     this.config = {
-      port: options.port || process.env.PORT || 3240,
+      port: options.port || process.env.PORT || 32420,
       serverName: options.serverName || process.env.SERVER_NAME || 'SELO Media Server',
       serverId: options.serverId || process.env.SERVER_ID || uuidv4(),
       version: options.version || process.env.VERSION || '1.0.0',
