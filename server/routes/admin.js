@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const { v4: uuidv4 } = require('uuid');
-const { isAuthenticated, isAdmin } = require('../middleware/auth');
+const { authenticateToken, requireAdmin } = require('../middleware/auth');
 const { logger } = require('../utils/Logger');
-
-// Import sub-routes
+const { v4: uuidv4 } = require('uuid');
+const os = require('os');
+const fs = require('fs-extra');
+const path = require('path');
+const { User, Stream } = require('../models');
 const directoriesRouter = require('./admin/directories');
+const { adminLimiter } = require('../middleware/rateLimiter');
 
 // In-memory storage for transcoding presets until we add them to the database model
 let transcodingPresets = [
@@ -49,29 +52,261 @@ let transcodingPresets = [
   }
 ];
 
-// Temporarily comment out authentication for testing purposes
-// TODO: Uncomment this when authentication system is fully integrated
-// router.use(isAuthenticated, isAdmin);
+// Apply rate limiting and authentication middleware to all admin routes
+router.use(adminLimiter);
+router.use(authenticateToken, requireAdmin);
 
 // Get server statistics
-router.get('/stats', (req, res) => {
-  // In a real implementation, this would pull system resource info
+router.get('/stats', async (req, res) => {
+  try {
+    // Get real system statistics
+    const stats = await getSystemStats();
+    res.json(stats);
+  } catch (error) {
+    logger.error('Error getting system stats:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to get system statistics',
+      error: error.message
+    });
+  }
+});
+
+/**
+ * Get comprehensive system statistics
+ */
+async function getSystemStats() {
   const stats = {
-    cpu: Math.floor(Math.random() * 100),
-    memory: {
-      total: 16384,
-      used: Math.floor(Math.random() * 8192)
-    },
-    disk: {
-      total: 1024000,
-      used: Math.floor(Math.random() * 512000)
-    },
-    activeUsers: Math.floor(Math.random() * 20),
-    activeStreams: Math.floor(Math.random() * 5)
+    cpu: await getCpuUsage(),
+    memory: getMemoryStats(),
+    disk: await getDiskStats(),
+    activeUsers: await getActiveUsersCount(),
+    activeStreams: await getActiveStreamsCount(),
+    uptime: getUptimeStats(),
+    network: getNetworkStats(),
+    system: getSystemInfo()
   };
   
-  res.json(stats);
-});
+  return stats;
+}
+
+/**
+ * Get CPU usage percentage
+ */
+function getCpuUsage() {
+  return new Promise((resolve) => {
+    const startMeasure = cpuAverage();
+    
+    setTimeout(() => {
+      const endMeasure = cpuAverage();
+      const idleDifference = endMeasure.idle - startMeasure.idle;
+      const totalDifference = endMeasure.total - startMeasure.total;
+      const percentageCPU = 100 - ~~(100 * idleDifference / totalDifference);
+      resolve(Math.max(0, Math.min(100, percentageCPU)));
+    }, 1000);
+  });
+}
+
+/**
+ * Helper function to calculate CPU average
+ */
+function cpuAverage() {
+  const cpus = os.cpus();
+  let totalIdle = 0;
+  let totalTick = 0;
+  
+  cpus.forEach(cpu => {
+    for (const type in cpu.times) {
+      totalTick += cpu.times[type];
+    }
+    totalIdle += cpu.times.idle;
+  });
+  
+  return {
+    idle: totalIdle / cpus.length,
+    total: totalTick / cpus.length
+  };
+}
+
+/**
+ * Get memory statistics
+ */
+function getMemoryStats() {
+  const totalMemory = os.totalmem();
+  const freeMemory = os.freemem();
+  const usedMemory = totalMemory - freeMemory;
+  
+  return {
+    total: Math.round(totalMemory / 1024 / 1024), // Convert to MB
+    used: Math.round(usedMemory / 1024 / 1024),   // Convert to MB
+    free: Math.round(freeMemory / 1024 / 1024),   // Convert to MB
+    percentage: Math.round((usedMemory / totalMemory) * 100)
+  };
+}
+
+/**
+ * Get disk statistics for the application directory
+ */
+async function getDiskStats() {
+  try {
+    const appDir = path.resolve(__dirname, '..');
+    const stats = await fs.stat(appDir);
+    
+    // For Unix-like systems, try to get disk usage
+    if (process.platform !== 'win32') {
+      try {
+        const { execSync } = require('child_process');
+        const output = execSync(`df -BM '${appDir}'`, { encoding: 'utf8' });
+        const lines = output.trim().split('\n');
+        
+        if (lines.length > 1) {
+          const parts = lines[1].split(/\s+/);
+          const totalMB = parseInt(parts[1].replace('M', ''));
+          const usedMB = parseInt(parts[2].replace('M', ''));
+          const availableMB = parseInt(parts[3].replace('M', ''));
+          
+          return {
+            total: totalMB,
+            used: usedMB,
+            free: availableMB,
+            percentage: Math.round((usedMB / totalMB) * 100)
+          };
+        }
+      } catch (execError) {
+        logger.warn('Could not get disk usage via df command:', execError.message);
+      }
+    }
+    
+    // Fallback: return basic info
+    return {
+      total: 1024000, // 1TB default
+      used: 256000,   // 256GB default
+      free: 768000,   // 768GB default
+      percentage: 25,
+      note: 'Disk usage detection not available on this platform'
+    };
+  } catch (error) {
+    logger.warn('Error getting disk stats:', error);
+    return {
+      total: 0,
+      used: 0,
+      free: 0,
+      percentage: 0,
+      error: 'Unable to determine disk usage'
+    };
+  }
+}
+
+/**
+ * Get count of active users (users with recent activity)
+ */
+async function getActiveUsersCount() {
+  try {
+    // Consider users active if they've had activity in the last 24 hours
+    const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    
+    const activeUsers = await User.count({
+      where: {
+        last_login: {
+          [require('sequelize').Op.gte]: twentyFourHoursAgo
+        }
+      }
+    });
+    
+    return activeUsers;
+  } catch (error) {
+    logger.warn('Error getting active users count:', error);
+    return 0;
+  }
+}
+
+/**
+ * Get count of active streams
+ */
+async function getActiveStreamsCount() {
+  try {
+    const activeStreams = await Stream.count({
+      where: {
+        status: 'active'
+      }
+    });
+    
+    return activeStreams;
+  } catch (error) {
+    logger.warn('Error getting active streams count:', error);
+    return 0;
+  }
+}
+
+/**
+ * Get system uptime statistics
+ */
+function getUptimeStats() {
+  const systemUptime = os.uptime(); // System uptime in seconds
+  const processUptime = process.uptime(); // Process uptime in seconds
+  
+  return {
+    system: Math.floor(systemUptime),
+    process: Math.floor(processUptime),
+    systemFormatted: formatUptime(systemUptime),
+    processFormatted: formatUptime(processUptime)
+  };
+}
+
+/**
+ * Get network interface statistics
+ */
+function getNetworkStats() {
+  const interfaces = os.networkInterfaces();
+  const stats = [];
+  
+  for (const [name, addresses] of Object.entries(interfaces)) {
+    if (addresses) {
+      const ipv4 = addresses.find(addr => addr.family === 'IPv4' && !addr.internal);
+      if (ipv4) {
+        stats.push({
+          interface: name,
+          address: ipv4.address,
+          netmask: ipv4.netmask,
+          mac: ipv4.mac
+        });
+      }
+    }
+  }
+  
+  return stats;
+}
+
+/**
+ * Get basic system information
+ */
+function getSystemInfo() {
+  return {
+    platform: os.platform(),
+    arch: os.arch(),
+    hostname: os.hostname(),
+    nodeVersion: process.version,
+    cpuCount: os.cpus().length,
+    cpuModel: os.cpus()[0]?.model || 'Unknown',
+    loadAverage: os.loadavg()
+  };
+}
+
+/**
+ * Format uptime in human-readable format
+ */
+function formatUptime(seconds) {
+  const days = Math.floor(seconds / 86400);
+  const hours = Math.floor((seconds % 86400) / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  
+  const parts = [];
+  if (days > 0) parts.push(`${days}d`);
+  if (hours > 0) parts.push(`${hours}h`);
+  if (minutes > 0) parts.push(`${minutes}m`);
+  
+  return parts.length > 0 ? parts.join(' ') : '< 1m';
+}
 
 // Get activity logs
 router.get('/logs', (req, res) => {

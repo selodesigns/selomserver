@@ -66,7 +66,7 @@ Response:
 ### Logout
 
 ```
-POST /api/auth/logout
+POST http://localhost:32420/api/auth/logout
 ```
 
 ## Error Handling

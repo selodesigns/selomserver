@@ -449,18 +449,27 @@ class StreamManager {
   cleanupOldStreams() {
     try {
       // Find and mark all previous active streams as stopped
-      Stream.update({ 
-        status: 'stopped',
-        ended_at: new Date()
-      }, { 
-        where: { status: { [Op.in]: ['active', 'starting'] } }
-      }).then(([count]) => {
-        if (count > 0) {
-          logger.info(`Marked ${count} previously active streams as stopped`);
+      if (!Stream || typeof Stream.update !== 'function') {
+        if (logger && typeof logger.error === 'function') {
+          logger.error('Stream model is missing or Stream.update is not a function. Skipping stream status cleanup.');
         }
-      }).catch(err => {
-        logger.error(`Error updating previous stream states: ${err.message}`, err);
-      });
+      } else {
+        // Only use valid status values for this model: 'pending', 'active', 'paused', 'completed', 'error'
+        Stream.update({ 
+          status: 'error', // Mark as error instead of stopped for clarity
+          ended_at: new Date()
+        }, { 
+          where: { status: { [Op.in]: ['active', 'pending'] } } // 'starting' is not a status, use 'pending' if needed
+        }).then(([count]) => {
+          if (count > 0 && logger && typeof logger.info === 'function') {
+            logger.info(`Marked ${count} previously active streams as error`);
+          }
+        }).catch(err => {
+          if (logger && typeof logger.error === 'function') {
+            logger.error(`Error updating previous stream states: ${err.message}`, err);
+          }
+        });
+      }
       
       // Clean up stream directories
       if (fs.existsSync(this.streamDir)) {

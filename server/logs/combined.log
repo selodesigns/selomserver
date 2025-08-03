@@ -563,3 +563,37 @@ SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 
 2025-06-27 22:12:51 [INFO] [SELO-Media-Server] Listening on: http://localhost:3241
 2025-06-27 22:12:51 [INFO] [SELO-Media-Server] 
 2025-06-27 22:15:05 [INFO] [SELO-Media-Server] Received shutdown signal
+2025-08-02 20:37:51 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":4,"limit":3}
+2025-08-02 20:37:51 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":3,"limit":2}
+2025-08-02 20:37:51 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":3,"limit":2}
+2025-08-02 20:37:51 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":2,"limit":1}
+2025-08-02 20:37:51 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"POST","count":11,"limit":10}
+2025-08-02 20:37:51 [WARN] [SELO-Media-Server] Authentication rate limit exceeded {"ip":"::ffff:127.0.0.1","endpoint":"/"}
+2025-08-02 20:37:51 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":31,"limit":30}
+2025-08-02 20:37:51 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":61,"limit":60}
+2025-08-02 20:37:51 [ERROR] [SELO-Media-Server] Rate limiter error {"error":"Key generator error"}
+2025-08-02 20:37:51 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":6,"limit":5}
+2025-08-02 20:37:51 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":7,"limit":5}
+2025-08-02 20:37:51 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":8,"limit":5}
+2025-08-02 20:37:51 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":9,"limit":5}
+2025-08-02 20:37:51 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":10,"limit":5}
+2025-08-02 20:37:51 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":4,"limit":3}
+2025-08-02 20:37:51 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":2,"limit":1}
+2025-08-02 20:37:51 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":2,"limit":1}
+2025-08-02 20:50:52 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":4,"limit":3}
+2025-08-02 20:50:52 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":3,"limit":2}
+2025-08-02 20:50:52 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":3,"limit":2}
+2025-08-02 20:50:52 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":2,"limit":1}
+2025-08-02 20:50:52 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"POST","count":11,"limit":10}
+2025-08-02 20:50:52 [WARN] [SELO-Media-Server] Authentication rate limit exceeded {"ip":"::ffff:127.0.0.1","endpoint":"/"}
+2025-08-02 20:50:52 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":31,"limit":30}
+2025-08-02 20:50:52 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":61,"limit":60}
+2025-08-02 20:50:52 [ERROR] [SELO-Media-Server] Rate limiter error {"error":"Key generator error"}
+2025-08-02 20:50:52 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":6,"limit":5}
+2025-08-02 20:50:52 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":7,"limit":5}
+2025-08-02 20:50:52 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":8,"limit":5}
+2025-08-02 20:50:52 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":9,"limit":5}
+2025-08-02 20:50:52 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":10,"limit":5}
+2025-08-02 20:50:52 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":4,"limit":3}
+2025-08-02 20:50:52 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":2,"limit":1}
+2025-08-02 20:50:52 [WARN] [SELO-Media-Server] Rate limit exceeded {"ip":"::ffff:127.0.0.1","path":"/","method":"GET","count":2,"limit":1}

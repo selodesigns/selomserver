@@ -165,6 +165,58 @@ This document provides solutions to common issues you might encounter with SELO 
 
 ### Playback Fails to Start
 
+**Problem**: Playback fails to start or stops unexpectedly.
+
+**Solutions**:
+1. Check server logs for errors related to streaming or transcoding.
+2. Ensure FFmpeg is installed and accessible.
+3. Force transcoding for the problematic file:
+   - Via UI: Player Settings > Disable Direct Play
+
+### StreamManager Errors
+
+**Problem**: Error `Stream.update is not a function` appears in logs during stream cleanup.
+
+**Cause**: This occurs if the StreamManager attempts to call `update` on a stream object that is not a valid model instance or the method is missing.
+
+**Solution**:
+- Ensure the StreamManager cleanup logic uses the correct Stream model/method. See [Development Guide](DEVELOPMENT.md#streammanager-errors) for code fix details.
+- Upgrade to the latest version if using an older release.
+
+---
+
+## Rate Limiting Issues
+
+### Key Generator Error
+
+**Problem**: Error `Key generator error` appears in logs related to rate limiting.
+
+**Cause**: The rate limiter's key generator function may throw or return an invalid key (e.g., undefined/null).
+
+**Solution**:
+- Ensure your custom key generator always returns a valid string.
+- If using the default, check for unusual proxy/network setups that may affect `req.ip`.
+- See [Configuration Guide](CONFIGURATION.md#rate-limiting) for environment variable options.
+
+---
+
+## Routing/Middleware Issues
+
+### Router.use() Requires Middleware Function
+
+**Problem**: Error `Router.use() requires a middleware function but got undefined` when starting the server or accessing admin routes.
+
+**Cause**: This usually means an import is missing or incorrect in `admin.js` or a referenced middleware file.
+
+**Solution**:
+- Check that all middleware and route handlers are properly imported/exported.
+- See [Development Guide](DEVELOPMENT.md#middleware-imports) for troubleshooting route imports.
+- Restart the server after fixing imports.
+
+---
+
+[← Installation Guide](INSTALLATION.md) | [Configuration Guide →](CONFIGURATION.md) | [API Reference](API.md)
+
 **Problem**: Media doesn't play when selected.
 
 **Solutions**:

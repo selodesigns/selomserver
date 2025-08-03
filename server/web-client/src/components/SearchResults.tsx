@@ -43,18 +43,32 @@ function a11yProps(index: number) {
   };
 }
 
+import NeonPagination from './NeonPagination';
+
 interface SearchResultsProps {
   query: string;
   results: Media[];
   loading: boolean;
   error: string | null;
+  page?: number;
+  limit?: number;
+  totalResults?: number;
+  totalPages?: number;
+  onPageChange?: (page: number) => void;
+  onLimitChange?: (limit: number) => void;
 }
 
 const SearchResults: React.FC<SearchResultsProps> = ({ 
   query, 
   results, 
   loading, 
-  error 
+  error,
+  page = 1,
+  limit = 20,
+  totalResults = 0,
+  totalPages = 1,
+  onPageChange,
+  onLimitChange
 }) => {
   const [tabValue, setTabValue] = React.useState(0);
 
@@ -135,9 +149,62 @@ const SearchResults: React.FC<SearchResultsProps> = ({
         {allResults.length > 0 ? (
           <>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Found {allResults.length} result{allResults.length !== 1 ? 's' : ''} for "{query}"
+              {totalResults > 0
+                ? `Found ${totalResults} result${totalResults !== 1 ? 's' : ''} for "${query}"`
+                : `Found ${allResults.length} result${allResults.length !== 1 ? 's' : ''} for "${query}"`}
             </Typography>
+
+            {/* Result Range and Page Size Selector */}
+            {(totalResults > 0 || totalPages > 1) && (
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                <span style={{
+                  color: '#00ffe7',
+                  fontFamily: 'Share Tech Mono, monospace',
+                  textShadow: '0 0 6px #ff00ea',
+                  fontSize: 15
+                }}>
+                  {(() => {
+                    const start = (page - 1) * limit + 1;
+                    const end = Math.min(page * limit, totalResults);
+                    return `Showing ${start}–${end} of ${totalResults} results`;
+                  })()}
+                </span>
+                {/* Neon Page Size Selector */}
+                {onLimitChange && (
+                  <select
+                    value={limit}
+                    onChange={e => onLimitChange(Number(e.target.value))}
+                    style={{
+                      background: '#181924',
+                      color: '#00ffe7',
+                      border: '2px solid #ff00ea',
+                      borderRadius: 8,
+                      fontFamily: 'Share Tech Mono, monospace',
+                      fontSize: 15,
+                      boxShadow: '0 0 8px #00ffe7, 0 0 12px #ff00ea',
+                      outline: 'none',
+                      marginLeft: 16,
+                      padding: '4px 16px',
+                      transition: 'all 0.15s',
+                    }}
+                  >
+                    {[10, 20, 40, 60, 100].map(opt => (
+                      <option key={opt} value={opt} style={{ background: '#181924', color: '#00ffe7' }}>{opt} / page</option>
+                    ))}
+                  </select>
+                )}
+              </div>
+            )}
+
             <MediaGrid media={allResults} isLoading={false} libraryType="movies" />
+            {/* Cyberpunk Neon Pagination */}
+            {totalPages > 1 && onPageChange && (
+              <NeonPagination
+                page={page}
+                totalPages={totalPages}
+                onPageChange={onPageChange}
+              />
+            )}
           </>
         ) : null}
       </TabPanel>

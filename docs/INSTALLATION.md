@@ -50,7 +50,7 @@ The quickest way to get SELO Media Server running:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/SELOMServer.git
+git clone https://github.com/selodesigns/SELOMServer.git
 
 # Navigate to the project directory
 cd SELOMServer
@@ -67,7 +67,7 @@ For a more customized installation:
 
 1. Clone the repository
    ```bash
-   git clone https://github.com/yourusername/SELOMServer.git
+   git clone https://github.com/selodesigns/SELOMServer.git
    cd SELOMServer
    ```
 
@@ -91,7 +91,7 @@ For installation with Docker:
 
 1. Pull the image
    ```bash
-   docker pull yourusername/selomserver:latest
+   docker pull selodesigns/selomserver:latest
    ```
 
 2. Create a docker-compose.yml file
@@ -102,7 +102,7 @@ For installation with Docker:
        image: yourusername/selomserver:latest
        container_name: selomserver
        ports:
-         - "32400:32400"
+         - "32420:32420"
        volumes:
          - /path/to/media:/app/data/media
          - /path/to/config:/app/data/config
@@ -154,7 +154,7 @@ For installation with Docker:
    - Navigate to where you want to install SELO
    - Run:
      ```powershell
-     git clone https://github.com/yourusername/SELOMServer.git
+     git clone https://github.com/selodesigns/SELOMServer.git
      cd SELOMServer
      .\scripts\install.ps1
      ```
@@ -193,7 +193,7 @@ For installation with Docker:
 
 3. **Install SELO Media Server**
    ```bash
-   git clone https://github.com/yourusername/SELOMServer.git
+   git clone https://github.com/selodesigns/SELOMServer.git
    cd SELOMServer
    chmod +x scripts/install.sh
    ./scripts/install.sh
@@ -273,7 +273,7 @@ For installation with Docker:
 
 3. **Install SELO Media Server**
    ```bash
-   git clone https://github.com/yourusername/SELOMServer.git
+   git clone https://github.com/selodesigns/SELOMServer.git
    cd SELOMServer
    chmod +x scripts/install.sh
    ./scripts/install.sh
@@ -339,7 +339,7 @@ For installation with Docker:
 
 After installation:
 
-1. Access the web interface at http://localhost:32400
+1. Access the web interface at http://localhost:32420
 2. Log in with the default credentials (if you used the quick start or standard install script)
    - Username: `admin`
    - Password: `admin`
@@ -397,3 +397,7 @@ To completely remove SELO Media Server:
    - Linux: `sudo rm /etc/systemd/system/selomserver.service && sudo systemctl daemon-reload`
 
 Note: This will not remove your media files if they are stored outside the application directory.
+
+---
+
+[← Configuration Guide](CONFIGURATION.md) | [Troubleshooting Guide](TROUBLESHOOTING.md) | [API Reference](API.md)

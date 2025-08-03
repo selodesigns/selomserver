@@ -13,8 +13,7 @@ const HomePage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   
-  // This is a placeholder. In a real implementation, we would
-  // fetch recently added content across all libraries
+  // Now fetches recently added content across all libraries, sorted by date, top 12.
   useEffect(() => {
     const fetchRecentContent = async () => {
       try {
@@ -23,17 +22,18 @@ const HomePage: React.FC = () => {
         const librariesResponse = await apiService.getLibraries();
         
         if (librariesResponse.success && librariesResponse.data && librariesResponse.data.length > 0) {
-          // For now, just get content from the first library
-          const firstLibrary = librariesResponse.data[0];
-          const contentResponse = await apiService.getLibraryContents(firstLibrary.id);
-          
-          if (contentResponse.success && contentResponse.data) {
-            // Sort by date added and take most recent
-            const sorted = [...contentResponse.data.media].sort((a, b) => {
-              return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-            });
-            setRecentlyAdded(sorted.slice(0, 12)); // Show at most 12 items
+          // Fetch media from all libraries in parallel
+          const libraryIds = librariesResponse.data.map(lib => lib.id);
+          const contentResponses = await Promise.all(libraryIds.map(id => apiService.getLibraryContents(id)));
+          let allMedia: Media[] = [];
+          for (const response of contentResponses) {
+            if (response.success && response.data && Array.isArray(response.data.media)) {
+              allMedia = allMedia.concat(response.data.media);
+            }
           }
+          // Sort all media by created_at (descending)
+          const sorted = allMedia.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+          setRecentlyAdded(sorted.slice(0, 12)); // Show at most 12 items
         }
       } catch (err) {
         console.error('Error fetching recent content:', err);
@@ -65,17 +65,18 @@ const HomePage: React.FC = () => {
         const librariesResponse = await apiService.getLibraries();
         
         if (librariesResponse.success && librariesResponse.data && librariesResponse.data.length > 0) {
-          // For now, just get content from the first library
-          const firstLibrary = librariesResponse.data[0];
-          const contentResponse = await apiService.getLibraryContents(firstLibrary.id);
-          
-          if (contentResponse.success && contentResponse.data) {
-            // Sort by date added and take most recent
-            const sorted = [...contentResponse.data.media].sort((a, b) => {
-              return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-            });
-            setRecentlyAdded(sorted.slice(0, 12)); // Show at most 12 items
+          // Fetch media from all libraries in parallel
+          const libraryIds = librariesResponse.data.map(lib => lib.id);
+          const contentResponses = await Promise.all(libraryIds.map(id => apiService.getLibraryContents(id)));
+          let allMedia: Media[] = [];
+          for (const response of contentResponses) {
+            if (response.success && response.data && Array.isArray(response.data.media)) {
+              allMedia = allMedia.concat(response.data.media);
+            }
           }
+          // Sort all media by created_at (descending)
+          const sorted = allMedia.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+          setRecentlyAdded(sorted.slice(0, 12)); // Show at most 12 items
         }
       } catch (err) {
         console.error('Error fetching recent content:', err);

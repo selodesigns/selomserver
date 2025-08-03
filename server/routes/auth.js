@@ -5,6 +5,7 @@ const { User, sequelize } = require('../models');
 const { Op } = require('sequelize');
 const { authenticateToken, generateToken, generateRefreshToken } = require('../middleware/auth');
 const { logger } = require('../utils/Logger');
+const { authLimiter, apiLimiter } = require('../middleware/rateLimiter');
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ const router = express.Router();
  * @desc    Register a new user
  * @access  Public
  */
-router.post('/register', async (req, res) => {
+router.post('/register', authLimiter, async (req, res) => {
   try {
     const { username, email, password, displayName } = req.body;
 
@@ -89,7 +90,7 @@ router.post('/register', async (req, res) => {
  * @desc    Authenticate user & get token
  * @access  Public
  */
-router.post('/login', async (req, res) => {
+router.post('/login', authLimiter, async (req, res) => {
   try {
     const { username, password } = req.body;
 
@@ -102,7 +103,6 @@ router.post('/login', async (req, res) => {
     }
 
     // Check if user exists (by username or email)
-    console.log('[DEBUG] Login endpoint hit', req.body);
     logger.debug(`Login attempt for username/email: ${username}`);
     const user = await User.findOne({
       where: {
@@ -113,7 +113,9 @@ router.post('/login', async (req, res) => {
       }
     });
     logger.debug(`User lookup result: ${user ? 'FOUND' : 'NOT FOUND'}`);
-    console.log('[DEBUG] User lookup result:', user ? { id: user.id, username: user.username, email: user.email, is_admin: user.is_admin, is_active: user.is_active } : 'NOT FOUND');
+    if (user) {
+      logger.debug(`User found: ${user.username} (ID: ${user.id}, Admin: ${user.is_admin}, Active: ${user.is_active})`);
+    }
 
     if (!user) {
       return res.status(400).json({
@@ -125,7 +127,6 @@ router.post('/login', async (req, res) => {
     // Check password
     const isMatch = await bcrypt.compare(password, user.password_hash);
     logger.debug(`Password match result: ${isMatch}`);
-    console.log('[DEBUG] Password match result:', isMatch);
     
     if (!isMatch) {
       return res.status(400).json({
@@ -168,7 +169,7 @@ router.post('/login', async (req, res) => {
  * @desc    Get current user data
  * @access  Private
  */
-router.get('/me', authenticateToken, async (req, res) => {
+router.get('/me', apiLimiter, authenticateToken, async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id);
 
@@ -207,7 +208,7 @@ router.get('/me', authenticateToken, async (req, res) => {
  * @desc    Refresh access token using refresh token
  * @access  Public
  */
-router.post('/refresh', async (req, res) => {
+router.post('/refresh', apiLimiter, async (req, res) => {
   try {
     const { refreshToken } = req.body;
 

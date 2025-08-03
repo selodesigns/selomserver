@@ -55,6 +55,25 @@ export const apiService = {
     return response.data;
   },
   
+  // Search across all media items
+  searchMedia: async (query: string, options?: { limit?: number; offset?: number; type?: string; library_id?: number }) => {
+    const params = new URLSearchParams({ q: query });
+    
+    if (options?.limit) params.append('limit', options.limit.toString());
+    if (options?.offset) params.append('offset', options.offset.toString());
+    if (options?.type) params.append('type', options.type);
+    if (options?.library_id) params.append('library_id', options.library_id.toString());
+    
+    const response = await api.get(`/api/library/search?${params.toString()}`);
+    return response.data;
+  },
+  
+  // Get detailed information for a specific media item
+  getMediaDetail: async (mediaId: number) => {
+    const response = await api.get(`/api/library/media/${mediaId}`);
+    return response.data;
+  },
+  
   // Trigger library scan
   scanLibrary: async (libraryId: number) => {
     const response = await api.post<ApiResponse<{ success: boolean }>>(`/api/library/sections/${libraryId}/scan`);

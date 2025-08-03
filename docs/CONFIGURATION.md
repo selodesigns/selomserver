@@ -246,7 +246,7 @@ Additional configuration may be required depending on your hardware.
 ### Minimal Server
 
 ```env
-PORT=32400
+PORT=32420
 MEDIA_LIBRARY_PATH=/path/to/media
 ENABLE_TRANSCODING=false
 ```
@@ -254,7 +254,7 @@ ENABLE_TRANSCODING=false
 ### Home Server with Hardware Acceleration
 
 ```env
-PORT=32400
+PORT=32420
 SERVER_NAME=Home Media
 MEDIA_LIBRARY_PATH=/mnt/nas/media
 THUMBNAIL_PATH=/mnt/ssd/thumbnails
@@ -267,7 +267,7 @@ MAX_CONCURRENT_STREAMS=3
 ### Production Server
 
 ```env
-PORT=32400
+PORT=32420
 SERVER_NAME=Production Media
 BASE_URL=https://media.example.com
 LOG_LEVEL=info
@@ -301,3 +301,7 @@ BACKUP_RETENTION=14
 ## Dynamic Configuration
 
 Some configuration options can be changed through the web interface under Settings > Server. Changes made through the web interface take precedence over environment variables and configuration files.
+
+---
+
+[← Troubleshooting Guide](TROUBLESHOOTING.md) | [Installation Guide](INSTALLATION.md) | [API Reference](API.md)

@@ -325,29 +325,27 @@ async function checkMySQLStatus(detailed) {
 }
 
 /**
- * Run database migrations
- * @returns {Promise<Object>} Migration results
+ * Run database migrations using the advanced migration system
  */
 async function runMigrations() {
-  try {
-    const dbType = process.env.DB_TYPE || 'sqlite';
-    
-    logger.info(`Running migrations for ${dbType} database`);
-    
-    // Here would be the code to run migrations
-    // This is a placeholder for the actual migration code
-    
-    return {
-      success: true,
-      migrationsRun: 0
-    };
-  } catch (error) {
-    logger.error('Database migration failed', { error: error.message });
-    return {
-      success: false,
-      error: error.message
-    };
-  }
+try {
+const { migrationManager } = require('./migrations');
+  
+logger.info('Starting database migration process');
+  
+const result = await migrationManager.runMigrations();
+  
+if (result.success) {
+logger.info(`Migration completed: ${result.message}`);
+} else {
+logger.error(`Migration failed: ${result.error || 'Unknown error'}`);
+}
+  
+return result;
+} catch (error) {
+logger.error('Database migration failed', { error: error.message });
+throw error;
+}
 }
 
 /**

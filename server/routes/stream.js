@@ -8,11 +8,12 @@
 
 const express = require('express');
 const router = express.Router();
-const path = require('path');
-const fs = require('fs');
-const { Stream, Media, User } = require('../models');
+const { Media, Stream, User } = require('../models');
+const { logger } = require('../utils/Logger');
 const { authenticateToken } = require('../middleware/auth');
-const logger = require('../utils/Logger');
+const { streamLimiter, apiLimiter } = require('../middleware/rateLimiter');
+const path = require('path');
+const fs = require('fs-extra');
 
 // Will be initialized in the exports function
 let streamManager;
@@ -24,7 +25,7 @@ let streamManager;
  * Optional body params: clientCapabilities
  * Authentication: Required (JWT)
  */
-router.post('/start', authenticateToken, async (req, res) => {
+router.post('/start', streamLimiter, authenticateToken, async (req, res) => {
   try {
     const { mediaId, clientCapabilities = {} } = req.body;
     const userId = req.user.id; // Get authenticated user ID from token
@@ -76,7 +77,7 @@ router.post('/start', authenticateToken, async (req, res) => {
  * POST /api/stream/stop/:streamId
  * Authentication: Required (JWT)
  */
-router.post('/stop/:streamId', authenticateToken, async (req, res) => {
+router.post('/stop/:streamId', apiLimiter, authenticateToken, async (req, res) => {
   try {
     const { streamId } = req.params;
     
@@ -123,7 +124,7 @@ router.post('/stop/:streamId', authenticateToken, async (req, res) => {
  * Serve HLS playlist file
  * GET /api/stream/:streamId/playlist.m3u8
  */
-router.get('/:streamId/playlist.m3u8', (req, res) => {
+router.get('/hls/:streamId/playlist.m3u8', streamLimiter, async (req, res) => {
   try {
     const { streamId } = req.params;
     const playlistPath = path.join(__dirname, '../data/streams', streamId, 'playlist.m3u8');
@@ -161,7 +162,7 @@ router.get('/:streamId/playlist.m3u8', (req, res) => {
  * Serve HLS segment file
  * GET /api/stream/:streamId/segment_*.ts
  */
-router.get('/:streamId/segment_:segmentNumber.ts', (req, res) => {
+router.get('/hls/:streamId/segment_:segmentNumber.ts', streamLimiter, async (req, res) => {
   try {
     const { streamId, segmentNumber } = req.params;
     const segmentPath = path.join(__dirname, '../data/streams', streamId, `segment_${segmentNumber}.ts`);

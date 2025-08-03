@@ -2,19 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Box,
-  Grid,
   Typography,
   Paper,
   Chip,
   Button,
   CircularProgress,
   Divider,
-  IconButton
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent
 } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import CloseIcon from '@mui/icons-material/Close';
 import { getMediaIcon } from '../utils/mediaIcons';
 import apiService from '../services/api';
+import MediaPlayer from '../components/MediaPlayer';
 import type { Media } from '../types';
 
 const MediaDetailPage: React.FC = () => {
@@ -23,6 +27,7 @@ const MediaDetailPage: React.FC = () => {
   const [media, setMedia] = useState<Media | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showPlayer, setShowPlayer] = useState(false);
   
   useEffect(() => {
     const fetchMediaDetails = async () => {
@@ -35,38 +40,17 @@ const MediaDetailPage: React.FC = () => {
       try {
         setLoading(true);
         
-        // In a real implementation, this would call a dedicated media detail endpoint
-        // For now, we'll fetch all libraries and search for the media item
-        const librariesResponse = await apiService.getLibraries();
+        // Use dedicated media detail endpoint for better performance
+        const response = await apiService.getMediaDetail(parseInt(mediaId!));
         
-        if (librariesResponse.success && librariesResponse.data) {
-          let foundMedia: Media | null = null;
-          
-          // Search for the media in all libraries
-          for (const library of librariesResponse.data) {
-            if (foundMedia) break;
-            
-            const response = await apiService.getLibraryContents(library.id);
-            
-            if (response.success && response.data) {
-              foundMedia = response.data.media.find(item => 
-                item.id === parseInt(mediaId, 10)
-              ) || null;
-            }
-          }
-          
-          if (foundMedia) {
-            setMedia(foundMedia);
-          } else {
-            setError('Media not found');
-          }
+        if (response.success && response.data) {
+          setMedia(response.data);
         } else {
-          setError('Failed to load libraries');
+          setError(response.message || 'Media not found');
         }
-        
       } catch (err) {
-        console.error('Error fetching media details:', err);
-        setError('Error connecting to server');
+        console.error('Error fetching media:', err);
+        setError('Error loading media details');
       } finally {
         setLoading(false);
       }
@@ -86,9 +70,12 @@ const MediaDetailPage: React.FC = () => {
   
   const handlePlayMedia = () => {
     if (media) {
-      // In a real implementation, this would start streaming or open a player
-      console.log('Playing media:', media.title);
+      setShowPlayer(true);
     }
+  };
+  
+  const handleClosePlayer = () => {
+    setShowPlayer(false);
   };
   
   const handleGoBack = () => {
@@ -119,9 +106,9 @@ const MediaDetailPage: React.FC = () => {
           <CircularProgress />
         </Box>
       ) : media ? (
-        <Grid container spacing={4}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 4 }}>
           {/* Media thumbnail/poster */}
-          <Grid item xs={12} md={4}>
+          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 33%' } }}>
             <Paper 
               sx={{
                 aspectRatio: '2/3',
@@ -158,10 +145,10 @@ const MediaDetailPage: React.FC = () => {
                 Play
               </Button>
             )}
-          </Grid>
+          </Box>
           
           {/* Media details */}
-          <Grid item xs={12} md={8}>
+          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 67%' } }}>
             <Typography variant="h4" gutterBottom>
               {media.title}
             </Typography>
@@ -198,39 +185,39 @@ const MediaDetailPage: React.FC = () => {
             
             <Divider sx={{ my: 2 }} />
             
-            <Grid container spacing={2}>
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
               {media.director && (
-                <Grid item xs={6}>
+                <Box>
                   <Typography variant="subtitle2" color="text.secondary">
                     Director
                   </Typography>
                   <Typography variant="body1">
                     {media.director}
                   </Typography>
-                </Grid>
+                </Box>
               )}
               
               {media.actors && media.actors.length > 0 && (
-                <Grid item xs={6}>
+                <Box>
                   <Typography variant="subtitle2" color="text.secondary">
                     Cast
                   </Typography>
                   <Typography variant="body1">
                     {media.actors.join(', ')}
                   </Typography>
-                </Grid>
+                </Box>
               )}
               
-              <Grid item xs={6}>
+              <Box>
                 <Typography variant="subtitle2" color="text.secondary">
                   Added
                 </Typography>
                 <Typography variant="body1">
                   {formatDate(media.created_at)}
                 </Typography>
-              </Grid>
+              </Box>
               
-              <Grid item xs={6}>
+              <Box>
                 <Typography variant="subtitle2" color="text.secondary">
                   File Path
                 </Typography>
@@ -243,15 +230,56 @@ const MediaDetailPage: React.FC = () => {
                 >
                   {media.path}
                 </Typography>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
       ) : (
         <Typography variant="body1" sx={{ textAlign: 'center', py: 4 }}>
           Media not found
         </Typography>
       )}
+      
+      {/* Media Player Dialog */}
+      <Dialog
+        open={showPlayer}
+        onClose={handleClosePlayer}
+        maxWidth="lg"
+        fullWidth
+        PaperProps={{
+          sx: {
+            bgcolor: 'black',
+            maxHeight: '90vh'
+          }
+        }}
+      >
+        <DialogTitle sx={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center',
+          bgcolor: 'black',
+          color: 'white',
+          pb: 1
+        }}>
+          <Typography variant="h6" component="div">
+            {media?.title}
+          </Typography>
+          <IconButton
+            onClick={handleClosePlayer}
+            sx={{ color: 'white' }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent sx={{ p: 0, bgcolor: 'black' }}>
+          {media && showPlayer && (
+            <MediaPlayer 
+              media={media} 
+              onClose={handleClosePlayer}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };

@@ -149,7 +149,7 @@ SELO Media Server can be configured through environment variables or a `.env` fi
 
 | Option | Description | Default |
 |--------|-------------|---------|
-| `PORT` | Port number for the web server | 32400 |
+| `PORT` | Port number for the web server | 32420 |
 | `SERVER_NAME` | Name of your media server | SELO Media Server |
 | `MEDIA_LIBRARY_PATH` | Path to your media library | ./data/media |
 | `LOG_LEVEL` | Logging level (error, warn, info, verbose, debug) | info |
@@ -171,7 +171,7 @@ docker pull selodesigns/selomserver:latest
 # Run the container
 docker run -d \
   --name selomserver \
-  -p 32400:32400 \
+  -p 32420:32420 \
   -v /path/to/media:/app/data/media \
   -v /path/to/config:/app/data/config \
   selodesigns/selomserver:latest
@@ -239,7 +239,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 - Check the [documentation](docs/)
-- Open an [issue](https://github.com/selodesigns/selomserver/issues)
+- Open an [issue](https://github.com/selodesigns/SELOMServer/issues)
 
 ---
 
@@ -250,3 +250,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [React](https://reactjs.org/) - Frontend UI library
 - [Material-UI](https://mui.com/) - React UI framework
 - [Express](https://expressjs.com/) - Web server framework
+
+---
+
+[← Installation Guide](docs/INSTALLATION.md) | [Configuration Guide](docs/CONFIGURATION.md) | [Troubleshooting Guide](docs/TROUBLESHOOTING.md) | [API Reference](docs/API.md)

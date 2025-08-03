@@ -13,6 +13,7 @@ const { initDatabase } = require('./config/database');
 const mediaScanner = require('./services/MediaScanner');
 const StreamManager = require('./services/StreamManager');
 const webSocketService = require('./services/WebSocketService');
+const { apiLimiter } = require('./middleware/rateLimiter');
 
 /**
  * SELO Media Server
@@ -222,8 +223,11 @@ class SELOMediaServer {
     this.app.use(helmet()); // Security headers
     this.app.use(cors());    // CORS support
     this.app.use(compression()); // Response compression
-    this.app.use(express.json()); // Parse JSON requests
-    this.app.use(express.urlencoded({ extended: true })); // Parse URL-encoded requests
+    this.app.use(express.json({ limit: '50mb' }));
+    this.app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+    // Global rate limiting for all API routes
+    this.app.use('/api', apiLimiter);
     
     // Serve static files from the React app build
     const webClientDistPath = path.join(__dirname, 'web-client', 'dist');
