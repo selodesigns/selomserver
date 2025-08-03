@@ -79,6 +79,7 @@ The API uses standard HTTP status codes:
 - `401` - Unauthorized
 - `403` - Forbidden
 - `404` - Not Found
+- `429` - Too Many Requests
 - `500` - Server Error
 
 Error responses have the format:

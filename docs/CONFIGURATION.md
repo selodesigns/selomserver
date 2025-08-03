@@ -48,11 +48,11 @@ The `.env` file should be placed in the `server` directory. You can copy the `ex
 
 | Variable | Description | Default | Example |
 |----------|-------------|---------|---------|
-| `PORT` | Server port number | `32400` | `PORT=8080` |
+| `PORT` | Server port number | `32420` | `PORT=32420` |
 | `HOST` | Host to bind to | `0.0.0.0` (all interfaces) | `HOST=127.0.0.1` |
 | `NODE_ENV` | Node.js environment | `production` | `NODE_ENV=development` |
 | `SERVER_NAME` | Name of your server | `SELO Media Server` | `SERVER_NAME=Home Movies` |
-| `BASE_URL` | Base URL for server | `http://localhost:32400` | `BASE_URL=https://media.example.com` |
+| `BASE_URL` | Base URL for server | `http://localhost:32420` | `BASE_URL=https://media.example.com` |
 | `LOG_LEVEL` | Logging level | `info` | `LOG_LEVEL=debug` |
 | `LOG_FORMAT` | Log format (simple, json, pretty) | `simple` | `LOG_FORMAT=json` |
 

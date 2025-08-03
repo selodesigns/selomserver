@@ -103,6 +103,37 @@ SELOMServer/
 └── package.json        # Root dependencies
 ```
 
+## Updated Development Workflow
+
+- **Frontend:**
+  - Located in `server/web-client/`
+  - Run with `npm start` for dev, `npm run build` for production
+  - Uses React, Material-UI, and custom neon/cyberpunk components
+  - HLS.js is used for advanced media playback
+
+- **Backend:**
+  - Located in `server/`
+  - Run with `npm run dev` (development) or `npm start` (production)
+  - Express.js, SQLite/Postgres, and real-time system monitoring
+  - API endpoints for search, media detail, streaming, admin stats
+
+- **Database Migrations:**
+  - Managed via scripts in `server/utils/migrations.js` and CLI
+  - Run `npm run migrate` to apply migrations
+
+- **Testing:**
+  - Jest and supertest for backend (see `server/tests/`)
+  - Run tests with `npm test` (backend)
+  - Coverage includes authentication, rate limiting, streaming, migrations
+
+- **Cyberpunk UI:**
+  - See `server/web-client/src/components/NeonPagination.tsx` and `MediaPlayer.tsx`
+  - All new UI components use neon/cyberpunk styling for a modern look
+
+- **Production Readiness:**
+  - Rate limiting, authentication, and system monitoring are enabled by default
+  - Use `.env` and `server/config/` for environment-specific settings
+
 ## Architecture Overview
 
 SELO Media Server follows a client-server architecture:

@@ -81,6 +81,27 @@ After installation, access SELO Media Server at: http://localhost:32420
 
 ---
 
+## 🚀 Ubuntu Quick Install
+
+For Ubuntu 22.04+:
+
+```bash
+sudo apt update
+sudo apt install -y nodejs npm ffmpeg git
+# (Optional) Install build tools for native modules
+sudo apt install -y build-essential
+
+# Clone and set up
+git clone https://github.com/selodesigns/SELOMServer.git
+cd SELOMServer
+node scripts/quick-start.js
+```
+
+- Default web interface: http://localhost:32420
+- Media library path and other settings can be configured in `server/.env` or `server/config`.
+
+---
+
 ## 📋 Installation
 
 ### Detailed Installation
